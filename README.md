@@ -1,6 +1,6 @@
 # TCard
 
-<video src="./example/example.mp4" width="300">
+![example](./example/example.gif)
 
 ## Install
 
