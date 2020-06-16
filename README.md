@@ -40,7 +40,7 @@ List<Widget> cards = List.generate(
   images.length,
   (int index) {
     return Container(
-      decoration: BoxDecoration(v
+      decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16.0),
         boxShadow: [
