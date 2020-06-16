@@ -1,3 +1,3 @@
 library tcard;
 
-export './src/cards.dart';
+export 'src/cards.dart';
