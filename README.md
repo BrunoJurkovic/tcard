@@ -23,7 +23,7 @@ TCard(
 )
 ```
 
-![example](./example/example.gif)
+<img src="./example/colors.gif" width="520"  style="width: 260px;" alt="colors">
 
 ### Network image
 

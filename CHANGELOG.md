@@ -1,3 +1,7 @@
+## [1.0.2] - 2020.06.19
+
+* Update readme add dependencies. 🚀
+
 ## [1.0.1] - 2020.06.16
 
 * Update import path, add plugin desction. 🎉
