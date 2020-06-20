@@ -8,7 +8,7 @@ Tinder like cards plugin.
 
 ```yml
 dependencies:
-  tcard: ^0.1.1
+  tcard: ^1.0.2
 ```
 
 ## Uasge
