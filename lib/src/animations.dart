@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// 卡片尺寸
+/// Card Sizes
 class CardSizes {
   static Size front(BoxConstraints constraints) {
     return Size(constraints.maxWidth * 0.9, constraints.maxHeight * 0.9);
@@ -13,21 +13,16 @@ class CardSizes {
   static Size back(BoxConstraints constraints) {
     return Size(constraints.maxWidth * 0.8, constraints.maxHeight * .9);
   }
-
-  static Size hide(BoxConstraints constraints) {
-    return Size(constraints.maxWidth * 0.75, constraints.maxHeight * 0.8);
-  }
 }
 
-/// 卡片位置
+/// Card Alignments
 class CardAlignments {
   static Alignment front = Alignment(0.0, -0.5);
   static Alignment middle = Alignment(0.0, 0.0);
   static Alignment back = Alignment(0.0, 0.5);
-  static Alignment hide = Alignment(0.0, 1.0);
 }
 
-/// 卡片运动动画
+/// Card Forward Animations
 class CardAnimations {
   /// 最前面卡片的消失动画
   static Animation<Alignment> frontCardDisappearAnimation(
@@ -111,52 +106,9 @@ class CardAnimations {
       ),
     );
   }
-
-  /// 隐藏卡片位置变换动画
-  static Animation<Alignment> hideCardAlignmentAnimation(
-    AnimationController parent,
-  ) {
-    return AlignmentTween(
-      begin: CardAlignments.hide,
-      end: CardAlignments.back,
-    ).animate(
-      CurvedAnimation(
-        parent: parent,
-        curve: Interval(0.5, .8, curve: Curves.easeIn),
-      ),
-    );
-  }
-
-  // 隐藏卡片尺寸动画
-  static Animation<Size> hideCardSizeAnimation(
-    AnimationController parent,
-    BoxConstraints constraints,
-  ) {
-    return SizeTween(
-      begin: CardSizes.hide(constraints),
-      end: CardSizes.back(constraints),
-    ).animate(
-      CurvedAnimation(
-        parent: parent,
-        curve: Interval(0.5, 0.8, curve: Curves.easeIn),
-      ),
-    );
-  }
-
-  // 隐藏卡片透明度动画
-  static Animation<double> hideCardOpacityAnimation(
-    AnimationController parent,
-  ) {
-    return Tween(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: parent,
-        curve: Interval(0.5, 0.8, curve: Curves.easeIn),
-      ),
-    );
-  }
 }
 
-/// 卡片恢复运动动画
+/// Card Backward Animations
 class CardReverseAnimations {
   /// 最前面卡片的出现动画
   static Animation<Alignment> frontCardShowAnimation(
@@ -236,49 +188,6 @@ class CardReverseAnimations {
       CurvedAnimation(
         parent: parent,
         curve: Interval(0.4, 0.7, curve: Curves.easeIn),
-      ),
-    );
-  }
-
-  /// 隐藏卡片位置变换动画
-  static Animation<Alignment> hideCardAlignmentAnimation(
-    AnimationController parent,
-  ) {
-    return AlignmentTween(
-      begin: CardAlignments.back,
-      end: CardAlignments.hide,
-    ).animate(
-      CurvedAnimation(
-        parent: parent,
-        curve: Interval(0.5, .8, curve: Curves.easeIn),
-      ),
-    );
-  }
-
-  // 隐藏卡片尺寸动画
-  static Animation<Size> hideCardSizeAnimation(
-    AnimationController parent,
-    BoxConstraints constraints,
-  ) {
-    return SizeTween(
-      begin: CardSizes.back(constraints),
-      end: CardSizes.hide(constraints),
-    ).animate(
-      CurvedAnimation(
-        parent: parent,
-        curve: Interval(0.5, 0.8, curve: Curves.easeIn),
-      ),
-    );
-  }
-
-  // 隐藏卡片透明度动画
-  static Animation<double> hideCardOpacityAnimation(
-    AnimationController parent,
-  ) {
-    return Tween(begin: 1.0, end: 0.0).animate(
-      CurvedAnimation(
-        parent: parent,
-        curve: Interval(0.5, 0.8, curve: Curves.easeIn),
       ),
     );
   }

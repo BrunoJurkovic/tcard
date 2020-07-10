@@ -37,11 +37,22 @@ class TCardController {
 
 /// 卡片列表
 class TCard extends StatefulWidget {
-  final List<Widget> cards;
+  /// 卡片尺寸
   final Size size;
+
+  /// 卡片列表
+  final List<Widget> cards;
+
+  /// 向前回调方法
   final ForwardCallback onForward;
+
+  /// 向后回调方法
   final BackCallback onBack;
+
+  /// 结束回调方法
   final EndCallback onEnd;
+
+  /// 卡片控制器
   final TCardController controller;
 
   const TCard({
@@ -246,9 +257,6 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
       return;
     }
 
-    if (_frontCardIndex >= _cards.length - 1) {
-      return;
-    }
     _cardChangeController.reset();
     _cardChangeController.forward();
   }
@@ -259,9 +267,6 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
       return;
     }
 
-    if (_frontCardIndex <= 0) {
-      return;
-    }
     _cardReverseController.reset();
     _cardReverseController.forward();
   }
@@ -276,7 +281,7 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
 
     if (widget.onEnd != null &&
         widget.onEnd is Function &&
-        _frontCardIndex >= _cards.length - 1) {
+        _frontCardIndex >= _cards.length) {
       widget.onEnd();
     }
   }
@@ -313,9 +318,12 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
 
   // 更新最前面卡片的位置
   void _updateFrontCardAlignment(DragUpdateDetails details, Size size) {
+    // 移动的速度
+    final double speed = 10.0;
+
     _frontCardAlignment += Alignment(
-      details.delta.dx / (size.width / 2) * 10,
-      details.delta.dy / (size.height / 2) * 10,
+      details.delta.dx / (size.width / 2) * speed,
+      details.delta.dy / (size.height / 2) * speed,
     );
     // 设置最前面卡片的旋转角度
     _frontCardRotation = _frontCardAlignment.x;
@@ -324,10 +332,10 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
 
   // 判断是否进行动画
   void _judgeRunAnimation(DragEndDetails details, Size size) {
+    // 卡片横轴距离限制
+    final double limit = 10.0;
     final bool isBeyondXLimit =
-        _frontCardAlignment.x > 10.0 || _frontCardAlignment.x < -10.0;
-    // final bool isBeyondYLimit =
-    //     _frontCardAlignment.y > 5.0 || _frontCardAlignment.y < -5.0;
+        _frontCardAlignment.x > limit || _frontCardAlignment.x < -limit;
 
     if (_frontCardAlignment.x < -2.0) {
       _isSwipLeft = true;
@@ -337,10 +345,6 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
 
     // 判断是否运行向前的动画，否则回弹
     if (isBeyondXLimit) {
-      if (_frontCardIndex >= _cards.length - 1) {
-        _runReboundAnimation(details.velocity.pixelsPerSecond, size);
-        return;
-      }
       _runChangeOrderAnimation();
     } else {
       _runReboundAnimation(details.velocity.pixelsPerSecond, size);
@@ -412,7 +416,8 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
       size: widget.size,
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          Size size = MediaQuery.of(context).size;
+          // 使用 LayoutBuilder 获取容器的尺寸，传个子项计算卡片尺寸
+          final Size size = MediaQuery.of(context).size;
 
           return Stack(
             children: <Widget>[
