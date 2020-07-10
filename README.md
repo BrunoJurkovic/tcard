@@ -1,6 +1,6 @@
 # TCard
 
-Tinder like cards plugin.
+Tinder like cards.
 
 [![GitHub stars](https://img.shields.io/github/stars/xrr2016/tcard)](https://github.com/xrr2016/tcard/stargazers) [![pub package](https://img.shields.io/pub/v/tcard.svg)](https://pub.dev/packages/tcard) ![Test](https://github.com/xrr2016/tcard/workflows/Test/badge.svg)
 
@@ -8,7 +8,7 @@ Tinder like cards plugin.
 
 ```yml
 dependencies:
-  tcard: ^1.0.2
+  tcard: ^1.1.0
 ```
 
 ## Uasge
@@ -74,6 +74,76 @@ TCard(
 ![images](./example/images.gif)
 
 Image from [gank.io](gank.io)
+
+### Use a controller
+
+```dart
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  TCardController _controller = TCardController();
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TCard(
+              cards: cards,
+              size: Size(360, 480),
+              controller: _controller,
+              onForward: (index) {
+                print(index);
+              },
+              onBack: (index) {
+                print(index);
+              },
+              onEnd: () {
+                print('end');
+              },
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                OutlineButton(
+                  onPressed: () {
+                    print(_controller);
+                    _controller.back();
+                  },
+                  child: Text('Back'),
+                ),
+                OutlineButton(
+                  onPressed: () {
+                    _controller.reset();
+                  },
+                  child: Text('Reset'),
+                ),
+                OutlineButton(
+                  onPressed: () {
+                    _controller.forward();
+                  },
+                  child: Text('Forward'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+![controller](./example/controller.gif)
+
 
 ## Property
 
