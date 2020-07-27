@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 
+import '../tcard.dart';
 import 'animations.dart';
 import 'swip_info.dart';
 
@@ -19,12 +20,8 @@ class TCardController {
 
   int get index => _state?._frontCardIndex ?? 0;
 
-  forward() {
-    final bool isSwipLeft = math.Random().nextBool();
-    final SwipInfo swipInfo = isSwipLeft
-        ? SwipInfo(_state._frontCardIndex, SwipDirection.Left)
-        : SwipInfo(_state._frontCardIndex, SwipDirection.Right);
-
+  forward({SwipDirection direction = SwipDirection.Right}) {
+    final SwipInfo swipInfo = SwipInfo(_state._frontCardIndex, direction);
     _state._swipInfoList.add(swipInfo);
     _state._runChangeOrderAnimation();
   }
