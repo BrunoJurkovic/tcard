@@ -1,3 +1,7 @@
+## [1.2.1] - 2020.07.27
+
+1. Export SwipInfo class. 🐛
+
 ## [1.2.0] - 2020.07.27
 
 1. Record the card sliding direction, use in onForward callback. ✨
