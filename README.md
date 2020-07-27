@@ -4,13 +4,6 @@ Tinder like cards.
 
 [![GitHub stars](https://img.shields.io/github/stars/xrr2016/tcard)](https://github.com/xrr2016/tcard/stargazers) [![pub package](https://img.shields.io/pub/v/tcard.svg)](https://pub.dev/packages/tcard) ![Test](https://github.com/xrr2016/tcard/workflows/Test/badge.svg)
 
-## Install
-
-```yml
-dependencies:
-  tcard: ^1.1.0
-```
-
 ## Uasge
 
 ### Use normal widget
@@ -97,7 +90,7 @@ class _MyAppState extends State<MyApp> {
               cards: cards,
               size: Size(360, 480),
               controller: _controller,
-              onForward: (index) {
+              onForward: (index, info) {
                 print(index);
               },
               onBack: (index) {
