@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'swip_info.dart';
+
 /// Card Sizes
 class CardSizes {
   static Size front(BoxConstraints constraints) {
@@ -28,13 +30,14 @@ class CardAnimations {
   static Animation<Alignment> frontCardDisappearAnimation(
     AnimationController parent,
     Alignment beginAlignment,
+    SwipInfo info,
   ) {
     return AlignmentTween(
       begin: beginAlignment,
       end: Alignment(
-        beginAlignment.x > 0
-            ? beginAlignment.x + 30.0
-            : beginAlignment.x - 30.0,
+        info.direction == SwipDirection.Left
+            ? beginAlignment.x - 30.0
+            : beginAlignment.x + 30.0,
         0.0,
       ),
     ).animate(
@@ -114,11 +117,13 @@ class CardReverseAnimations {
   static Animation<Alignment> frontCardShowAnimation(
     AnimationController parent,
     Alignment endAlignment,
-    bool isSwipLeft,
+    SwipInfo info,
   ) {
     return AlignmentTween(
       begin: Alignment(
-        isSwipLeft ? endAlignment.x + 30.0 : endAlignment.x - 30.0,
+        info.direction == SwipDirection.Left
+            ? endAlignment.x - 30.0
+            : endAlignment.x + 30.0,
         0.0,
       ),
       end: endAlignment,

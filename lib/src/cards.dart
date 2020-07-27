@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 
 import 'animations.dart';
+import 'swip_info.dart';
 
-typedef ForwardCallback(int index);
+typedef ForwardCallback(int index, SwipInfo info);
 typedef BackCallback(int index);
 typedef EndCallback();
 
@@ -19,6 +20,12 @@ class TCardController {
   int get index => _state?._frontCardIndex ?? 0;
 
   forward() {
+    final bool isSwipLeft = math.Random().nextBool();
+    final SwipInfo swipInfo = isSwipLeft
+        ? SwipInfo(_state._frontCardIndex, SwipDirection.Left)
+        : SwipInfo(_state._frontCardIndex, SwipDirection.Right);
+
+    _state._swipInfoList.add(swipInfo);
     _state._runChangeOrderAnimation();
   }
 
@@ -72,6 +79,8 @@ class TCard extends StatefulWidget {
 class _TCardState extends State<TCard> with TickerProviderStateMixin {
   //  初始的卡片列表
   final List<Widget> _cards = [];
+  // Card swip directions
+  final List<SwipInfo> _swipInfoList = [];
   //  最前面卡片的索引
   int _frontCardIndex = 0;
   // 最前面卡片的位置
@@ -86,8 +95,6 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
   Animation<Alignment> _reboundAnimation;
   // 卡片回弹动画控制器
   AnimationController _reboundController;
-  // 是否向左滑
-  bool _isSwipLeft = false;
 
   //  前面的卡片
   Widget _frontCard(BoxConstraints constraints) {
@@ -109,26 +116,25 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
         alignment: CardReverseAnimations.frontCardShowAnimation(
           _cardReverseController,
           CardAlignments.front,
-          _isSwipLeft,
+          _swipInfoList[_frontCardIndex],
         ).value,
         child: rotate,
       );
-    }
-
-    if (forward) {
+    } else if (forward) {
       return Align(
         alignment: CardAnimations.frontCardDisappearAnimation(
           _cardChangeController,
           _frontCardAlignment,
+          _swipInfoList[_frontCardIndex],
         ).value,
         child: rotate,
       );
+    } else {
+      return Align(
+        alignment: _frontCardAlignment,
+        child: rotate,
+      );
     }
-
-    return Align(
-      alignment: _frontCardAlignment,
-      child: rotate,
-    );
   }
 
   // 中间的卡片
@@ -152,9 +158,7 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
           child: child,
         ),
       );
-    }
-
-    if (forward) {
+    } else if (forward) {
       return Align(
         alignment: CardAnimations.middleCardAlignmentAnimation(
           _cardChangeController,
@@ -167,15 +171,15 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
           child: child,
         ),
       );
+    } else {
+      return Align(
+        alignment: CardAlignments.middle,
+        child: SizedBox.fromSize(
+          size: CardSizes.middle(constraints),
+          child: child,
+        ),
+      );
     }
-
-    return Align(
-      alignment: CardAlignments.middle,
-      child: SizedBox.fromSize(
-        size: CardSizes.middle(constraints),
-        child: child,
-      ),
-    );
   }
 
   // 后面的卡片
@@ -199,9 +203,7 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
           child: child,
         ),
       );
-    }
-
-    if (forward) {
+    } else if (forward) {
       return Align(
         alignment: CardAnimations.backCardAlignmentAnimation(
           _cardChangeController,
@@ -214,15 +216,15 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
           child: child,
         ),
       );
+    } else {
+      return Align(
+        alignment: CardAlignments.back,
+        child: SizedBox.fromSize(
+          size: CardSizes.back(constraints),
+          child: child,
+        ),
+      );
     }
-
-    return Align(
-      alignment: CardAlignments.back,
-      child: SizedBox.fromSize(
-        size: CardSizes.back(constraints),
-        child: child,
-      ),
-    );
   }
 
   // 判断是否在进行动画
@@ -257,6 +259,10 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
       return;
     }
 
+    if (_frontCardIndex >= _cards.length) {
+      return;
+    }
+
     _cardChangeController.reset();
     _cardChangeController.forward();
   }
@@ -267,16 +273,24 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
       return;
     }
 
+    if (_frontCardIndex == 0) {
+      _swipInfoList.clear();
+      return;
+    }
+
     _cardReverseController.reset();
     _cardReverseController.forward();
   }
 
   // 向前动画完成后执行
-  void _forward() {
+  void _forwardCallback() {
     _frontCardIndex++;
     _return();
     if (widget.onForward != null && widget.onForward is Function) {
-      widget.onForward(_frontCardIndex);
+      widget.onForward(
+        _frontCardIndex,
+        _swipInfoList[_frontCardIndex - 1],
+      );
     }
 
     if (widget.onEnd != null &&
@@ -286,8 +300,8 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
     }
   }
 
-  // 后退完成后执行
-  void _back() {
+  // Back animation callback
+  void _backCallback() {
     _return();
     if (widget.onBack != null && widget.onBack is Function) {
       widget.onBack(_frontCardIndex);
@@ -305,11 +319,12 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
   void _reset() {
     _cards.clear();
     _cards.addAll(widget.cards);
+    _swipInfoList.clear();
     _frontCardIndex = 0;
     _return();
   }
 
-  // 手指按下停止所有运行中的动画
+  // Stop animations
   void _stop() {
     _reboundController.stop();
     _cardChangeController.stop();
@@ -334,18 +349,17 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
   void _judgeRunAnimation(DragEndDetails details, Size size) {
     // 卡片横轴距离限制
     final double limit = 10.0;
-    final bool isBeyondXLimit =
-        _frontCardAlignment.x > limit || _frontCardAlignment.x < -limit;
-
-    if (_frontCardAlignment.x < -2.0) {
-      _isSwipLeft = true;
-    } else {
-      _isSwipLeft = false;
-    }
+    final bool isSwipLeft = _frontCardAlignment.x < -limit;
+    final bool isSwipRight = _frontCardAlignment.x > limit;
 
     // 判断是否运行向前的动画，否则回弹
-    if (isBeyondXLimit) {
+    if (isSwipLeft || isSwipRight) {
       _runChangeOrderAnimation();
+      if (isSwipLeft) {
+        _swipInfoList.add(SwipInfo(_frontCardIndex, SwipDirection.Left));
+      } else {
+        _swipInfoList.add(SwipInfo(_frontCardIndex, SwipDirection.Right));
+      }
     } else {
       _runReboundAnimation(details.velocity.pixelsPerSecond, size);
     }
@@ -371,7 +385,7 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
       ..addListener(() => setState(() {}))
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
-          _forward();
+          _forwardCallback();
         }
       });
 
@@ -384,9 +398,8 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
       ..addStatusListener((status) {
         if (status == AnimationStatus.forward) {
           _frontCardIndex--;
-        }
-        if (status == AnimationStatus.completed) {
-          _back();
+        } else if (status == AnimationStatus.completed) {
+          _backCallback();
         }
       });
 
