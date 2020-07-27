@@ -1,3 +1,8 @@
+## [1.2.0] - 2020.07.27
+
+1. Record the card sliding direction, use in onForward callback. ✨
+2. Update example. 📝
+
 ## [1.1.0] - 2020.07.10
 
 1. Fix onForward in the last card doesn't work. 🐛
@@ -6,20 +11,20 @@
 
 ## [1.0.2] - 2020.06.19
 
-* Update readme add dependencies. 🚀
+- Update readme add dependencies. 🚀
 
 ## [1.0.1] - 2020.06.16
 
-* Update import path, add plugin desction. 🎉
+- Update import path, add plugin desction. 🎉
 
 ## [1.0.0] - 2020.06.16
 
-* Version 1.0.0 release! 🚀
+- Version 1.0.0 release! 🚀
 
 ## [0.1.1] - 2020.06.15
 
-* Add network images demo. 🎉
+- Add network images demo. 🎉
 
 ## [0.1.0] - 2020.06.15
 
-* Version 0.1.0 release! 🚀
+- Version 0.1.0 release! 🚀

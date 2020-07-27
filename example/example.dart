@@ -51,8 +51,9 @@ class _TCardPageState extends State<TCardPage> {
             TCard(
               cards: cards,
               controller: _controller,
-              onForward: (index) {
+              onForward: (index, info) {
                 _index = index;
+                print(info.direction);
                 setState(() {});
               },
               onBack: (index) {

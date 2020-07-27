@@ -57,7 +57,7 @@ class _TCardPageState extends State<TCardPage> {
               size: Size(400, 600),
               cards: cards,
               controller: _controller,
-              onForward: (index) {
+              onForward: (index, info) {
                 _index = index;
                 setState(() {});
               },

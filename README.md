@@ -13,7 +13,7 @@ dependencies:
 
 ## Uasge
 
-### Normal widget
+### Use normal widget
 
 ```dart
 TCard(
@@ -27,7 +27,7 @@ TCard(
 
 <img src="./example/colors.gif" width="520"  style="width: 260px;" alt="colors">
 
-### Network image
+### Use network image
 
 ```dart
 List<String> images = [
@@ -75,7 +75,7 @@ TCard(
 
 Image from [gank.io](gank.io)
 
-### Use a controller
+### Use a controller to control
 
 ```dart
 class MyApp extends StatefulWidget {
@@ -144,17 +144,43 @@ class _MyAppState extends State<MyApp> {
 
 ![controller](./example/controller.gif)
 
+### Determine the sliding direction
+
+```dart
+ TCard(
+  cards: cards,
+  size: Size(360, 480),
+  controller: _controller,
+  onForward: (index, info) {
+    print(index);
+    print(info.direction);
+    if (info.direction == SwipDirection.Right) {
+      print('like');
+    } else {
+      print('dislike');
+    }
+  },
+  onBack: (index) {
+    print(index);
+  },
+  onEnd: () {
+    print('end');
+  },
+)
+```
+
+![like](./example/like.png)
 
 ## Property
 
-| property | type | default | description | required |
-| :- | :---: | :---: | :---: | :-: |
-| cards | `List<Widget>` | `null` | Render cards | `true` |
-| size | `Size` | `null` | Card size | `false` |
-| controller | `TCardController` | `null` | Card controller | `false` |
-| onForward | `ForwardCallback` | `null` | Forward animation callback | `false` |
-| onBack | `BackCallback` | `null` | Back animation callback | `false` |
-| onEnd | `EndCallback` | `null` | Forward end callback | `false` |
+| property   |       type        | default |        description         | required |
+| :--------- | :---------------: | :-----: | :------------------------: | :------: |
+| cards      |  `List<Widget>`   | `null`  |        Render cards        |  `true`  |
+| size       |      `Size`       | `null`  |         Card size          | `false`  |
+| controller | `TCardController` | `null`  |      Card controller       | `false`  |
+| onForward  | `ForwardCallback` | `null`  | Forward animation callback | `false`  |
+| onBack     |  `BackCallback`   | `null`  |  Back animation callback   | `false`  |
+| onEnd      |   `EndCallback`   | `null`  |    Forward end callback    | `false`  |
 
 ## Contribute
 
