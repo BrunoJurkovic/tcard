@@ -1,3 +1,7 @@
+## [1.2.2] - 2020.07.27
+
+1. Added direction attribute to controller forward method ✨
+
 ## [1.2.1] - 2020.07.27
 
 1. Export SwipInfo class. 🐛
