@@ -2,7 +2,6 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 
-import '../tcard.dart';
 import 'animations.dart';
 import 'swip_info.dart';
 
@@ -10,7 +9,7 @@ typedef ForwardCallback(int index, SwipInfo info);
 typedef BackCallback(int index);
 typedef EndCallback();
 
-/// 卡片控制器
+/// Card controller
 class TCardController {
   _TCardState _state;
 
