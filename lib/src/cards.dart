@@ -58,12 +58,16 @@ class TCard extends StatefulWidget {
   /// 卡片控制器
   final TCardController controller;
 
+  /// 控制Y轴
+  final bool lockYAxis;
+
   const TCard({
     @required this.cards,
     this.controller,
     this.onForward,
     this.onBack,
     this.onEnd,
+    this.lockYAxis = false,
     this.size = const Size(380, 400),
   })  : assert(cards != null),
         assert(cards.length > 0);
@@ -91,7 +95,6 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
   Animation<Alignment> _reboundAnimation;
   // 卡片回弹动画控制器
   AnimationController _reboundController;
-
   //  前面的卡片
   Widget _frontCard(BoxConstraints constraints) {
     Widget child =
@@ -333,8 +336,8 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
     final double speed = 10.0;
 
     _frontCardAlignment += Alignment(
-      details.delta.dx / (size.width / 2) * speed,
-      details.delta.dy / (size.height / 2) * speed,
+        details.delta.dx / (size.width / 2) * speed,
+        widget.lockYAxis ? 0 : details.delta.dy / (size.height / 2) * speed
     );
     // 设置最前面卡片的旋转角度
     _frontCardRotation = _frontCardAlignment.x;

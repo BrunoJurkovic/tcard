@@ -174,6 +174,7 @@ class _MyAppState extends State<MyApp> {
 | onForward  | `ForwardCallback` | `null`  | Forward animation callback | `false`  |
 | onBack     |  `BackCallback`   | `null`  |  Back animation callback   | `false`  |
 | onEnd      |   `EndCallback`   | `null`  |    Forward end callback    | `false`  |
+| lockYAxis  |   `bool`          | `false` |    Lock Y Axis Gesture     | `false`  |
 
 ## Contribute
 
