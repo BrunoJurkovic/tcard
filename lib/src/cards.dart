@@ -58,12 +58,20 @@ class TCard extends StatefulWidget {
   /// 卡片控制器
   final TCardController controller;
 
+  /// How quick should it be slided? less is slower. 10 is a bit slow. 20 is a quick enough.
+  final double slideSpeed;
+
+  /// How long does it have to wait until the next slide is sliable? less is quicker. 100 is fast enough. 500 is a bit slow.
+  final int delaySlideFor;
+
   const TCard({
     @required this.cards,
     this.controller,
     this.onForward,
     this.onBack,
     this.onEnd,
+    this.slideSpeed = 20,
+    this.delaySlideFor = 100,
     this.size = const Size(380, 400),
   })  : assert(cards != null),
         assert(cards.length > 0);
@@ -330,11 +338,11 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
   // 更新最前面卡片的位置
   void _updateFrontCardAlignment(DragUpdateDetails details, Size size) {
     // 移动的速度
-    final double speed = 10.0;
+    // final double speed = 10.0;
 
     _frontCardAlignment += Alignment(
-      details.delta.dx / (size.width / 2) * speed,
-      details.delta.dy / (size.height / 2) * speed,
+      details.delta.dx / (size.width / 2) * widget.slideSpeed,
+      details.delta.dy / (size.height / 2) * widget.slideSpeed,
     );
     // 设置最前面卡片的旋转角度
     _frontCardRotation = _frontCardAlignment.x;
@@ -375,7 +383,7 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
 
     // 初始化向前的动画控制器
     _cardChangeController = AnimationController(
-      duration: Duration(milliseconds: 1000),
+      duration: Duration(milliseconds: widget.delaySlideFor),
       vsync: this,
     )
       ..addListener(() => setState(() {}))
