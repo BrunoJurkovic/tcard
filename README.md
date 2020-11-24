@@ -174,6 +174,9 @@ class _MyAppState extends State<MyApp> {
 | onForward  | `ForwardCallback` | `null`  | Forward animation callback | `false`  |
 | onBack     |  `BackCallback`   | `null`  |  Back animation callback   | `false`  |
 | onEnd      |   `EndCallback`   | `null`  |    Forward end callback    | `false`  |
+| slideSpeed |   `double`   | `20`  |    How quick should it be slided? less is slower. 10 is a bit slow. 20 is a quick enough.    | `false`  |
+| delaySlideFor      |   `int`   | `100`  |    How long does it have to wait until the next slide is sliable? less is quicker. 100 is fast enough. 500 is a bit slow.    | `false`  |
+
 
 ## Contribute
 
