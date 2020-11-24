@@ -250,7 +250,7 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
     final double unitsPerSecondY = pixelsPerSecond.dy / size.height;
     final unitsPerSecond = Offset(unitsPerSecondX, unitsPerSecondY);
     final unitVelocity = unitsPerSecond.distance;
-    const spring = SpringDescription(mass: 30, stiffness: 1, damping: 1);
+    const spring = SpringDescription(mass: 30.0, stiffness: 1.0, damping: 1.0);
     final simulation = SpringSimulation(spring, 0, 1, -unitVelocity);
 
     _reboundController.animateWith(simulation);
