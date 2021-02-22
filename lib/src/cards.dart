@@ -60,6 +60,12 @@ class TCard extends StatefulWidget {
 
   /// 控制Y轴
   final bool lockYAxis;
+  
+  /// How quick should it be slided? less is slower. 10 is a bit slow. 20 is a quick enough.
+  final double slideSpeed;
+
+  /// How long does it have to wait until the next slide is sliable? less is quicker. 100 is fast enough. 500 is a bit slow.
+  final int delaySlideFor;
 
   const TCard({
     @required this.cards,
@@ -68,6 +74,8 @@ class TCard extends StatefulWidget {
     this.onBack,
     this.onEnd,
     this.lockYAxis = false,
+    this.slideSpeed = 20,
+    this.delaySlideFor = 100,
     this.size = const Size(380, 400),
   })  : assert(cards != null),
         assert(cards.length > 0);
@@ -245,7 +253,7 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
     final double unitsPerSecondY = pixelsPerSecond.dy / size.height;
     final unitsPerSecond = Offset(unitsPerSecondX, unitsPerSecondY);
     final unitVelocity = unitsPerSecond.distance;
-    const spring = SpringDescription(mass: 30, stiffness: 1, damping: 1);
+    const spring = SpringDescription(mass: 30.0, stiffness: 1.0, damping: 1.0);
     final simulation = SpringSimulation(spring, 0, 1, -unitVelocity);
 
     _reboundController.animateWith(simulation);
@@ -332,13 +340,13 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
 
   // 更新最前面卡片的位置
   void _updateFrontCardAlignment(DragUpdateDetails details, Size size) {
-    // 移动的速度
-    final double speed = 10.0;
-
+    
+    // 卡片移动速度 widget.slideSpeed
     _frontCardAlignment += Alignment(
-        details.delta.dx / (size.width / 2) * speed,
-        widget.lockYAxis ? 0 : details.delta.dy / (size.height / 2) * speed
+        details.delta.dx / (size.width / 2) * widget.slideSpeed,
+        widget.lockYAxis ? 0 : details.delta.dy / (size.height / 2) * widget.slideSpeed,
     );
+    
     // 设置最前面卡片的旋转角度
     _frontCardRotation = _frontCardAlignment.x;
     setState(() {});
@@ -378,7 +386,7 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
 
     // 初始化向前的动画控制器
     _cardChangeController = AnimationController(
-      duration: Duration(milliseconds: 1000),
+      duration: Duration(milliseconds: widget.delaySlideFor),
       vsync: this,
     )
       ..addListener(() => setState(() {}))
