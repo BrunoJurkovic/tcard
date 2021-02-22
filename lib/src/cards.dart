@@ -58,6 +58,9 @@ class TCard extends StatefulWidget {
   /// 卡片控制器
   final TCardController controller;
 
+  /// 控制Y轴
+  final bool lockYAxis;
+  
   /// How quick should it be slided? less is slower. 10 is a bit slow. 20 is a quick enough.
   final double slideSpeed;
 
@@ -70,6 +73,7 @@ class TCard extends StatefulWidget {
     this.onForward,
     this.onBack,
     this.onEnd,
+    this.lockYAxis = false,
     this.slideSpeed = 20,
     this.delaySlideFor = 100,
     this.size = const Size(380, 400),
@@ -99,7 +103,6 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
   Animation<Alignment> _reboundAnimation;
   // 卡片回弹动画控制器
   AnimationController _reboundController;
-
   //  前面的卡片
   Widget _frontCard(BoxConstraints constraints) {
     Widget child =
@@ -337,13 +340,13 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
 
   // 更新最前面卡片的位置
   void _updateFrontCardAlignment(DragUpdateDetails details, Size size) {
-    // 移动的速度
-    // final double speed = 10.0;
-
+    
+    // 卡片移动速度 widget.slideSpeed
     _frontCardAlignment += Alignment(
-      details.delta.dx / (size.width / 2) * widget.slideSpeed,
-      details.delta.dy / (size.height / 2) * widget.slideSpeed,
+        details.delta.dx / (size.width / 2) * widget.slideSpeed,
+        widget.lockYAxis ? 0 : details.delta.dy / (size.height / 2) * widget.slideSpeed,
     );
+    
     // 设置最前面卡片的旋转角度
     _frontCardRotation = _frontCardAlignment.x;
     setState(() {});
