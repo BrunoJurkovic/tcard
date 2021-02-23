@@ -4,23 +4,52 @@ Tinder like cards.
 
 [![GitHub stars](https://img.shields.io/github/stars/xrr2016/tcard)](https://github.com/xrr2016/tcard/stargazers) [![pub package](https://img.shields.io/pub/v/tcard.svg)](https://pub.dev/packages/tcard) ![Test](https://github.com/xrr2016/tcard/workflows/Test/badge.svg)
 
+- [TCard](#tcard)
+  - [Install](#install)
+  - [Uasge](#uasge)
+    - [Normal widget](#normal-widget)
+    - [Network image](#network-image)
+    - [Use a controller to control](#use-a-controller-to-control)
+    - [Determine the sliding direction](#determine-the-sliding-direction)
+    - [Reset width new cards](#reset-width-new-cards)
+  - [Property](#property)
+  - [Contribute](#contribute)
+  - [License](#license)
+
+## Install
+
+```yaml
+# pubspec.yaml
+dependencies:
+  tcard: ^1.2.2
+```
+
 ## Uasge
 
-### Use normal widget
+### Normal widget
 
 ```dart
+List<Widget> cards = List.generate(
+  5,
+  (index) => Container(
+    color: Colors.blue,
+    child: Center(
+      child: Text(
+        '$index',
+        style: TextStyle(fontSize: 60, color: Colors.white),
+      ),
+    ),
+  ),
+);
+
 TCard(
-  cards: [
-    Container(color: Colors.blue),
-    Container(color: Colors.yellow),
-    Container(color: Colors.red),
-  ],
+  cards: cards,
 )
 ```
 
-<img src="./example/colors.gif" width="520"  style="width: 260px;" alt="colors">
+<img src="./example/demo.gif" width="334" alt="demo">
 
-### Use network image
+### Network image
 
 ```dart
 List<String> images = [
@@ -93,7 +122,7 @@ class _MyAppState extends State<MyApp> {
               onForward: (index, info) {
                 print(index);
               },
-              onBack: (index) {
+              onBack: (index, info) {
                 print(index);
               },
               onEnd: () {
@@ -164,19 +193,31 @@ class _MyAppState extends State<MyApp> {
 
 ![like](./example/like.png)
 
+
+### Reset width new cards
+
+```dart
+List<Widget> newCards = [];
+
+TCardController _controller = TCardController();
+
+_controller.reset(cards: newCards);
+```
+
+
 ## Property
 
-| property   |       type        | default |        description         | required |
-| :--------- | :---------------: | :-----: | :------------------------: | :------: |
-| cards      |  `List<Widget>`   | `null`  |        Render cards        |  `true`  |
-| size       |      `Size`       | `null`  |         Card size          | `false`  |
-| controller | `TCardController` | `null`  |      Card controller       | `false`  |
-| onForward  | `ForwardCallback` | `null`  | Forward animation callback | `false`  |
-| onBack     |  `BackCallback`   | `null`  |  Back animation callback   | `false`  |
-| onEnd      |   `EndCallback`   | `null`  |    Forward end callback    | `false`  |
-| lockYAxis  |   `bool`          | `false` |    Lock Y Axis Gesture     | `false`  |
-| slideSpeed |   `double`   | `20`  |    How quick should it be slided? less is slower. 10 is a bit slow. 20 is a quick enough.    | `false`  |
-| delaySlideFor      |   `int`   | `100`  |    How long does it have to wait until the next slide is sliable? less is quicker. 100 is fast enough. 500 is a bit slow.    | `false`  |
+| property      |       type        | default |                                                      description                                                       | required |
+| :------------ | :---------------: | :-----: | :--------------------------------------------------------------------------------------------------------------------: | :------: |
+| cards         |  `List<Widget>`   | `null`  |                                                      Render cards                                                      |  `true`  |
+| size          |      `Size`       | `null`  |                                                       Card size                                                        | `false`  |
+| controller    | `TCardController` | `null`  |                                                    Card controller                                                     | `false`  |
+| onForward     | `ForwardCallback` | `null`  |                                               Forward animation callback                                               | `false`  |
+| onBack        |  `BackCallback`   | `null`  |                                                Back animation callback                                                 | `false`  |
+| onEnd         |   `EndCallback`   | `null`  |                                                  Forward end callback                                                  | `false`  |
+| lockYAxis     |      `bool`       | `false` |                                                  Lock Y Axis Gesture                                                   | `false`  |
+| slideSpeed    |     `double`      |  `20`   |                 How quick should it be slided? less is slower. 10 is a bit slow. 20 is a quick enough.                 | `false`  |
+| delaySlideFor |       `int`       |  `500`  | How long does it have to wait until the next slide is sliable? less is quicker. 100 is fast enough. 500 is a bit slow. | `false`  |
 
 ## Contribute
 

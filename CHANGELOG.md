@@ -1,3 +1,10 @@
+## [1.2.2] - 2021.02.23
+
+1. Add lockYAxis property ✨
+2. Fix back direction 🐛
+3. Reset cards with new widgets ✨
+4. Update docs 📝
+
 ## [1.2.2] - 2020.07.27
 
 1. Added direction attribute to controller forward method ✨
