@@ -21,7 +21,7 @@ Tinder like cards.
 ```yaml
 # pubspec.yaml
 dependencies:
-  tcard: ^1.3.0
+  tcard: ^1.3.2
 ```
 
 ## Uasge
@@ -182,7 +182,7 @@ class _MyAppState extends State<MyApp> {
       print('dislike');
     }
   },
-  onBack: (index) {
+  onBack: (index, info) {
     print(index);
   },
   onEnd: () {

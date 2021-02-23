@@ -1,3 +1,7 @@
+## [1.3.2] - 2021.02.23
+
+1. Use master branch publisher 🏗
+  
 ## [1.3.1] - 2021.02.23
 
 1. Fix onBack callback info index 🐛
