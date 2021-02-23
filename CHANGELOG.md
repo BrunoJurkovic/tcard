@@ -1,11 +1,15 @@
+## [1.3.3] - 2021.02.23
+
+1. Use credentialJson 🏗
+
 ## [1.3.2] - 2021.02.23
 
 1. Use master branch publisher 🏗
-  
+
 ## [1.3.1] - 2021.02.23
 
 1. Fix onBack callback info index 🐛
-   
+
 ## [1.3.0] - 2021.02.23
 
 1. Add lockYAxis property ✨
