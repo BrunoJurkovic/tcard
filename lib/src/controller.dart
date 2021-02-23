@@ -1,31 +1,35 @@
-import 'package:flutter/widgets.dart';
+import 'dart:math';
 
 import 'cards.dart';
 import 'swip_info.dart';
 
 /// Card controller
 class TCardController {
-  TCardState _state;
+  TCardState state;
 
   void bindState(TCardState state) {
-    this._state = state;
+    this.state = state;
   }
 
-  int get index => _state?.frontCardIndex ?? 0;
+  int get index => state?.frontCardIndex ?? 0;
 
-  forward({SwipDirection direction = SwipDirection.Right}) {
-    final SwipInfo swipInfo = SwipInfo(_state.frontCardIndex, direction);
-    _state.swipInfoList.add(swipInfo);
-    _state.runChangeOrderAnimation();
+  forward({SwipDirection direction}) {
+    if (direction == null) {
+      direction =
+          Random().nextBool() ? SwipDirection.Left : SwipDirection.Right;
+    }
+
+    state.swipInfoList.add(SwipInfo(state.frontCardIndex, direction));
+    state.runChangeOrderAnimation();
   }
 
   back() {
-    _state.runReverseOrderAnimation();
+    state.runReverseOrderAnimation();
   }
 
-  get reset => _state.reset;
+  get reset => state.reset;
 
   void dispose() {
-    _state = null;
+    state = null;
   }
 }

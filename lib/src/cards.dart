@@ -47,7 +47,7 @@ class TCard extends StatefulWidget {
     this.onEnd,
     this.lockYAxis = false,
     this.slideSpeed = 20,
-    this.delaySlideFor = 100,
+    this.delaySlideFor = 500,
     this.size = const Size(380, 400),
   })  : assert(cards != null),
         assert(cards.length > 0);
@@ -386,7 +386,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
 
     // 初始化向后的动画控制器
     _cardReverseController = AnimationController(
-      duration: Duration(milliseconds: 1000),
+      duration: Duration(milliseconds: widget.delaySlideFor),
       vsync: this,
     )
       ..addListener(() => setState(() {}))
@@ -399,8 +399,10 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
       });
 
     // 初始化回弹的动画控制器
-    _reboundController = AnimationController(vsync: this)
-      ..addListener(() {
+    _reboundController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: widget.delaySlideFor),
+    )..addListener(() {
         setState(() {
           _frontCardAlignment = _reboundAnimation.value;
         });
