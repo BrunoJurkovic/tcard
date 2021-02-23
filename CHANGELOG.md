@@ -1,4 +1,4 @@
-## [1.2.2] - 2021.02.23
+## [1.3.0] - 2021.02.23
 
 1. Add lockYAxis property ✨
 2. Fix back direction 🐛
