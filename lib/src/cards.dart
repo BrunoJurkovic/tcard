@@ -292,10 +292,12 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
     _resetFrontCard();
     _swipInfoList.removeLast();
     if (widget.onBack != null && widget.onBack is Function) {
-      widget.onBack(
-        _frontCardIndex,
-        _swipInfoList[_frontCardIndex],
-      );
+      int index = _frontCardIndex > 0 ? _frontCardIndex - 1 : 0;
+      SwipInfo info = _swipInfoList.isNotEmpty
+          ? _swipInfoList[index]
+          : SwipInfo(-1, SwipDirection.None);
+
+      widget.onBack(_frontCardIndex, info);
     }
   }
 

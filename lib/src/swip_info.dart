@@ -1,6 +1,7 @@
 enum SwipDirection {
   Left,
   Right,
+  None,
 }
 
 class SwipInfo {
