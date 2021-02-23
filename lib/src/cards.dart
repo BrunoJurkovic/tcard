@@ -3,40 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 
 import 'animations.dart';
+import 'controller.dart';
 import 'swip_info.dart';
 
 typedef ForwardCallback(int index, SwipInfo info);
-typedef BackCallback(int index);
+typedef BackCallback(int index, SwipInfo info);
 typedef EndCallback();
-
-/// Card controller
-class TCardController {
-  _TCardState _state;
-
-  void _bindState(_TCardState state) {
-    this._state = state;
-  }
-
-  int get index => _state?._frontCardIndex ?? 0;
-
-  forward({SwipDirection direction = SwipDirection.Right}) {
-    final SwipInfo swipInfo = SwipInfo(_state._frontCardIndex, direction);
-    _state._swipInfoList.add(swipInfo);
-    _state._runChangeOrderAnimation();
-  }
-
-  back() {
-    _state._runReverseOrderAnimation();
-  }
-
-  reset() {
-    _state._reset();
-  }
-
-  void dispose() {
-    _state = null;
-  }
-}
 
 /// 卡片列表
 class TCard extends StatefulWidget {
@@ -60,7 +32,7 @@ class TCard extends StatefulWidget {
 
   /// 控制Y轴
   final bool lockYAxis;
-  
+
   /// How quick should it be slided? less is slower. 10 is a bit slow. 20 is a quick enough.
   final double slideSpeed;
 
@@ -75,22 +47,26 @@ class TCard extends StatefulWidget {
     this.onEnd,
     this.lockYAxis = false,
     this.slideSpeed = 20,
-    this.delaySlideFor = 100,
+    this.delaySlideFor = 500,
     this.size = const Size(380, 400),
   })  : assert(cards != null),
         assert(cards.length > 0);
 
   @override
-  _TCardState createState() => _TCardState();
+  TCardState createState() => TCardState();
 }
 
-class _TCardState extends State<TCard> with TickerProviderStateMixin {
+class TCardState extends State<TCard> with TickerProviderStateMixin {
   //  初始的卡片列表
   final List<Widget> _cards = [];
   // Card swip directions
   final List<SwipInfo> _swipInfoList = [];
+  List<SwipInfo> get swipInfoList => _swipInfoList;
+
   //  最前面卡片的索引
   int _frontCardIndex = 0;
+  int get frontCardIndex => _frontCardIndex;
+
   // 最前面卡片的位置
   Alignment _frontCardAlignment = CardAlignments.front;
   // 最前面卡片的旋转角度
@@ -257,7 +233,7 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
     final simulation = SpringSimulation(spring, 0, 1, -unitVelocity);
 
     _reboundController.animateWith(simulation);
-    _return();
+    _resetFrontCard();
   }
 
   // 运行卡片向前动画
@@ -274,6 +250,8 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
     _cardChangeController.forward();
   }
 
+  get runChangeOrderAnimation => _runChangeOrderAnimation;
+
   // 运行卡片后退动画
   void _runReverseOrderAnimation() {
     if (_isAnimating()) {
@@ -289,10 +267,12 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
     _cardReverseController.forward();
   }
 
+  get runReverseOrderAnimation => _runReverseOrderAnimation;
+
   // 向前动画完成后执行
   void _forwardCallback() {
     _frontCardIndex++;
-    _return();
+    _resetFrontCard();
     if (widget.onForward != null && widget.onForward is Function) {
       widget.onForward(
         _frontCardIndex,
@@ -309,27 +289,37 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
 
   // Back animation callback
   void _backCallback() {
-    _return();
+    _resetFrontCard();
+    _swipInfoList.removeLast();
     if (widget.onBack != null && widget.onBack is Function) {
-      widget.onBack(_frontCardIndex);
+      widget.onBack(
+        _frontCardIndex,
+        _swipInfoList[_frontCardIndex],
+      );
     }
   }
 
   // 重置最前面卡片的位置
-  void _return() {
+  void _resetFrontCard() {
     _frontCardRotation = 0.0;
     _frontCardAlignment = CardAlignments.front;
     setState(() {});
   }
 
   // 重置所有卡片
-  void _reset() {
+  void _reset({List<Widget> cards}) {
     _cards.clear();
-    _cards.addAll(widget.cards);
+    if (cards != null) {
+      _cards.addAll(cards);
+    } else {
+      _cards.addAll(widget.cards);
+    }
     _swipInfoList.clear();
     _frontCardIndex = 0;
-    _return();
+    _resetFrontCard();
   }
+
+  get reset => _reset;
 
   // Stop animations
   void _stop() {
@@ -340,13 +330,14 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
 
   // 更新最前面卡片的位置
   void _updateFrontCardAlignment(DragUpdateDetails details, Size size) {
-    
     // 卡片移动速度 widget.slideSpeed
     _frontCardAlignment += Alignment(
-        details.delta.dx / (size.width / 2) * widget.slideSpeed,
-        widget.lockYAxis ? 0 : details.delta.dy / (size.height / 2) * widget.slideSpeed,
+      details.delta.dx / (size.width / 2) * widget.slideSpeed,
+      widget.lockYAxis
+          ? 0
+          : details.delta.dy / (size.height / 2) * widget.slideSpeed,
     );
-    
+
     // 设置最前面卡片的旋转角度
     _frontCardRotation = _frontCardAlignment.x;
     setState(() {});
@@ -381,7 +372,7 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
 
     // 绑定控制器
     if (widget.controller != null && widget.controller is TCardController) {
-      widget.controller._bindState(this);
+      widget.controller.bindState(this);
     }
 
     // 初始化向前的动画控制器
@@ -398,7 +389,7 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
 
     // 初始化向后的动画控制器
     _cardReverseController = AnimationController(
-      duration: Duration(milliseconds: 1000),
+      duration: Duration(milliseconds: widget.delaySlideFor),
       vsync: this,
     )
       ..addListener(() => setState(() {}))
@@ -411,8 +402,10 @@ class _TCardState extends State<TCard> with TickerProviderStateMixin {
       });
 
     // 初始化回弹的动画控制器
-    _reboundController = AnimationController(vsync: this)
-      ..addListener(() {
+    _reboundController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: widget.delaySlideFor),
+    )..addListener(() {
         setState(() {
           _frontCardAlignment = _reboundAnimation.value;
         });
