@@ -7,7 +7,7 @@ import 'controller.dart';
 import 'swip_info.dart';
 
 typedef ForwardCallback(int index, SwipInfo info);
-typedef BackCallback(int index);
+typedef BackCallback(int index, SwipInfo info);
 typedef EndCallback();
 
 /// 卡片列表
@@ -292,7 +292,10 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
     _resetFrontCard();
     _swipInfoList.removeLast();
     if (widget.onBack != null && widget.onBack is Function) {
-      widget.onBack(_frontCardIndex);
+      widget.onBack(
+        _frontCardIndex,
+        _swipInfoList[_frontCardIndex],
+      );
     }
   }
 
