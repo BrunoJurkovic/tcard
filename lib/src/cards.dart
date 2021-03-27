@@ -19,16 +19,16 @@ class TCard extends StatefulWidget {
   final List<Widget> cards;
 
   /// 向前回调方法
-  final ForwardCallback onForward;
+  final ForwardCallback? onForward;
 
   /// 向后回调方法
-  final BackCallback onBack;
+  final BackCallback? onBack;
 
   /// 结束回调方法
-  final EndCallback onEnd;
+  final EndCallback? onEnd;
 
   /// 卡片控制器
-  final TCardController controller;
+  final TCardController? controller;
 
   /// 控制Y轴
   final bool lockYAxis;
@@ -40,7 +40,7 @@ class TCard extends StatefulWidget {
   final int delaySlideFor;
 
   const TCard({
-    @required this.cards,
+    required this.cards,
     this.controller,
     this.onForward,
     this.onBack,
@@ -72,13 +72,13 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
   // 最前面卡片的旋转角度
   double _frontCardRotation = 0.0;
   // 卡片位置变换动画控制器
-  AnimationController _cardChangeController;
+  late AnimationController _cardChangeController;
   // 卡片位置恢复动画控制器
-  AnimationController _cardReverseController;
+  late AnimationController _cardReverseController;
   // 卡片回弹动画
-  Animation<Alignment> _reboundAnimation;
+  late Animation<Alignment> _reboundAnimation;
   // 卡片回弹动画控制器
-  AnimationController _reboundController;
+  late AnimationController _reboundController;
   //  前面的卡片
   Widget _frontCard(BoxConstraints constraints) {
     Widget child =
@@ -274,7 +274,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
     _frontCardIndex++;
     _resetFrontCard();
     if (widget.onForward != null && widget.onForward is Function) {
-      widget.onForward(
+      widget.onForward!(
         _frontCardIndex,
         _swipInfoList[_frontCardIndex - 1],
       );
@@ -283,7 +283,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
     if (widget.onEnd != null &&
         widget.onEnd is Function &&
         _frontCardIndex >= _cards.length) {
-      widget.onEnd();
+      widget.onEnd!();
     }
   }
 
@@ -297,7 +297,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
           ? _swipInfoList[index]
           : SwipInfo(-1, SwipDirection.None);
 
-      widget.onBack(_frontCardIndex, info);
+      widget.onBack!(_frontCardIndex, info);
     }
   }
 
@@ -309,7 +309,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
   }
 
   // 重置所有卡片
-  void _reset({List<Widget> cards}) {
+  void _reset({List<Widget>? cards}) {
     _cards.clear();
     if (cards != null) {
       _cards.addAll(cards);
@@ -374,7 +374,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
 
     // 绑定控制器
     if (widget.controller != null && widget.controller is TCardController) {
-      widget.controller.bindState(this);
+      widget.controller!.bindState(this);
     }
 
     // 初始化向前的动画控制器
@@ -420,7 +420,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
     _cardChangeController.dispose();
     _reboundController.dispose();
     if (widget.controller != null) {
-      widget.controller.dispose();
+      widget.controller!.dispose();
     }
     super.dispose();
   }
