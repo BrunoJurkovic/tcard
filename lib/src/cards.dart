@@ -309,7 +309,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
   }
 
   // 重置所有卡片
-  void _reset({List<Widget>? cards}) {
+  void reset({List<Widget>? cards}) {
     _cards.clear();
     if (cards != null) {
       _cards.addAll(cards);
@@ -320,8 +320,6 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
     _frontCardIndex = 0;
     _resetFrontCard();
   }
-
-  get reset => _reset;
 
   // Stop animations
   void _stop() {
