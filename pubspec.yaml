@@ -4,7 +4,7 @@ version: 1.3.3
 homepage: https://github.com/xrr2016/tcard
 
 environment:
-  sdk: '>=2.7.0 <3.0.0'
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
