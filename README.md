@@ -21,7 +21,7 @@ Tinder like cards.
 ```yaml
 # pubspec.yaml
 dependencies:
-  tcard: ^1.3.0
+  tcard: ^1.3.3
 ```
 
 ## Uasge
@@ -182,7 +182,7 @@ class _MyAppState extends State<MyApp> {
       print('dislike');
     }
   },
-  onBack: (index) {
+  onBack: (index, info) {
     print(index);
   },
   onEnd: () {
@@ -193,7 +193,6 @@ class _MyAppState extends State<MyApp> {
 
 ![like](./example/like.png)
 
-
 ### Reset width new cards
 
 ```dart
@@ -203,7 +202,6 @@ TCardController _controller = TCardController();
 
 _controller.reset(cards: newCards);
 ```
-
 
 ## Property
 

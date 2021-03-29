@@ -1,10 +1,10 @@
 name: tcard
 description: A tinder like cards flutter plugin, can slide it's children left or right. You can use it to show some images, videos and so on.
-version: 1.3.1
+version: 1.3.3
 homepage: https://github.com/xrr2016/tcard
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:

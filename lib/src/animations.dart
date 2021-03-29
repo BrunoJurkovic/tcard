@@ -64,7 +64,7 @@ class CardAnimations {
   }
 
   /// 中间卡片尺寸变换动画
-  static Animation<Size> middleCardSizeAnimation(
+  static Animation<Size?> middleCardSizeAnimation(
     AnimationController parent,
     BoxConstraints constraints,
   ) {
@@ -95,7 +95,7 @@ class CardAnimations {
   }
 
   /// 最后面卡片尺寸变换动画
-  static Animation<Size> backCardSizeAnimation(
+  static Animation<Size?> backCardSizeAnimation(
     AnimationController parent,
     BoxConstraints constraints,
   ) {
@@ -151,7 +151,7 @@ class CardReverseAnimations {
   }
 
   /// 中间卡片尺寸变换动画
-  static Animation<Size> middleCardSizeAnimation(
+  static Animation<Size?> middleCardSizeAnimation(
     AnimationController parent,
     BoxConstraints constraints,
   ) {
@@ -182,7 +182,7 @@ class CardReverseAnimations {
   }
 
   /// 最后面卡片尺寸变换动画
-  static Animation<Size> backCardSizeAnimation(
+  static Animation<Size?> backCardSizeAnimation(
     AnimationController parent,
     BoxConstraints constraints,
   ) {
