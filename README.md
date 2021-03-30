@@ -21,7 +21,7 @@ Tinder like cards.
 ```yaml
 # pubspec.yaml
 dependencies:
-  tcard: ^1.3.3
+  tcard: ^1.3.5
 ```
 
 ## Uasge
