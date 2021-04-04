@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'cards.dart';
-import 'swip_info.dart';
+import 'swipe_info.dart';
 
 /// Card controller
 class TCardController {
@@ -13,13 +13,13 @@ class TCardController {
 
   int get index => state?.frontCardIndex ?? 0;
 
-  forward({SwipDirection? direction}) {
+  forward({SwipeDirection? direction}) {
     if (direction == null) {
       direction =
-          Random().nextBool() ? SwipDirection.Left : SwipDirection.Right;
+          Random().nextBool() ? SwipeDirection.Left : SwipeDirection.Right;
     }
 
-    state!.swipInfoList.add(SwipInfo(state!.frontCardIndex, direction));
+    state!.swipeInfoList.add(SwipeInfo(state!.frontCardIndex, direction));
     state!.runChangeOrderAnimation();
   }
 

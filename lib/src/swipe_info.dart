@@ -1,14 +1,14 @@
-enum SwipDirection {
+enum SwipeDirection {
   Left,
   Right,
   None,
 }
 
-class SwipInfo {
+class SwipeInfo {
   final int cardIndex;
-  final SwipDirection direction;
+  final SwipeDirection direction;
 
-  SwipInfo(
+  SwipeInfo(
     this.cardIndex,
     this.direction,
   );

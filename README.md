@@ -176,7 +176,7 @@ class _MyAppState extends State<MyApp> {
   onForward: (index, info) {
     print(index);
     print(info.direction);
-    if (info.direction == SwipDirection.Right) {
+    if (info.direction == SwipeDirection.Right) {
       print('like');
     } else {
       print('dislike');
