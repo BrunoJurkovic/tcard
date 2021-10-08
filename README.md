@@ -6,12 +6,12 @@ Tinder like cards.
 
 - [TCard](#tcard)
   - [Install](#install)
-  - [Uasge](#uasge)
+  - [Usage](#usage)
     - [Normal widget](#normal-widget)
     - [Network image](#network-image)
     - [Use a controller to control](#use-a-controller-to-control)
     - [Determine the sliding direction](#determine-the-sliding-direction)
-    - [Reset width new cards](#reset-width-new-cards)
+    - [Reset with new cards](#reset-with-new-cards)
   - [Property](#property)
   - [Contribute](#contribute)
   - [License](#license)
@@ -24,7 +24,7 @@ dependencies:
   tcard: ^1.3.5
 ```
 
-## Uasge
+## Usage
 
 ### Normal widget
 
@@ -176,7 +176,7 @@ class _MyAppState extends State<MyApp> {
   onForward: (index, info) {
     print(index);
     print(info.direction);
-    if (info.direction == SwipDirection.Right) {
+    if (info.direction == SwipeDirection.Right) {
       print('like');
     } else {
       print('dislike');
@@ -193,7 +193,7 @@ class _MyAppState extends State<MyApp> {
 
 ![like](./example/like.png)
 
-### Reset width new cards
+### Reset with new cards
 
 ```dart
 List<Widget> newCards = [];
