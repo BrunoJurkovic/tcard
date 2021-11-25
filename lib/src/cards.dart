@@ -239,6 +239,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
   // 运行卡片向前动画
   void _runChangeOrderAnimation() {
     if (_isAnimating()) {
+      _swipeInfoList.removeLast();
       return;
     }
 
