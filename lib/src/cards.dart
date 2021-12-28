@@ -18,6 +18,9 @@ class TCard extends StatefulWidget {
   /// 卡片列表
   final List<Widget> cards;
 
+  final Widget? leftIcon;
+  final Widget? rightIcon;
+
   /// 向前回调方法
   final ForwardCallback? onForward;
 
@@ -41,6 +44,8 @@ class TCard extends StatefulWidget {
 
   const TCard({
     required this.cards,
+    this.leftIcon,
+    this.rightIcon,
     this.controller,
     this.onForward,
     this.onBack,
@@ -71,6 +76,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
   Alignment _frontCardAlignment = CardAlignments.front;
   // 最前面卡片的旋转角度
   double _frontCardRotation = 0.0;
+  double _opacity = 0.0;
   // 卡片位置变换动画控制器
   late AnimationController _cardChangeController;
   // 卡片位置恢复动画控制器
@@ -90,7 +96,28 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
       angle: (math.pi / 180.0) * _frontCardRotation,
       child: SizedBox.fromSize(
         size: CardSizes.front(constraints),
-        child: child,
+        child: Stack(
+          children: [
+            child,
+            Padding(
+              padding: EdgeInsets.all(15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Opacity(
+                    opacity: _frontCardRotation > 0 ? _opacity : 0,
+                    child: widget.leftIcon,
+                  ),
+                  // Spacer(),
+                  Opacity(
+                    opacity: _frontCardRotation < 0 ? _opacity : 0,
+                    child: widget.rightIcon,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
 
@@ -304,6 +331,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
   // 重置最前面卡片的位置
   void _resetFrontCard() {
     _frontCardRotation = 0.0;
+    _opacity = 0.0;
     _frontCardAlignment = CardAlignments.front;
     setState(() {});
   }
@@ -319,6 +347,11 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
     _swipeInfoList.clear();
     _frontCardIndex = 0;
     _resetFrontCard();
+  }
+
+  // 添加卡片
+  void append(List<Widget> cards) {
+    _cards.addAll(cards);
   }
 
   // Stop animations
@@ -340,6 +373,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
 
     // 设置最前面卡片的旋转角度
     _frontCardRotation = _frontCardAlignment.x;
+    _opacity = math.min((_frontCardRotation / 10).abs() * 1.2, 1);
     setState(() {});
   }
 
