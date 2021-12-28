@@ -52,8 +52,38 @@ class _TCardPageState extends State<TCardPage> {
             SizedBox(height: 200),
             TCard(
               cards: cards,
+              rightIcon: const Icon(
+                Icons.favorite,
+                color: Colors.pink,
+                size: 32,
+              ),
               controller: _controller,
               onForward: (index, info) {
+                // you can load more cards from you server
+                var offset = 3;
+                if (index >= cards.length - offset) {
+                  print('loading more...');
+                  List<Widget> addCards = List.generate(
+                    colors.length,
+                    (int index2) {
+                      return Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: colors[index2],
+                        ),
+                        child: Text(
+                          '${index2 + 1}',
+                          style:
+                              TextStyle(fontSize: 100.0, color: Colors.white),
+                        ),
+                      );
+                    },
+                  ).toList();
+                  setState(() {
+                    cards.addAll(addCards);
+                  });
+                  _controller.append(addCards);
+                }
                 _index = index;
                 print(info.direction);
                 setState(() {});
@@ -87,6 +117,13 @@ class _TCardPageState extends State<TCardPage> {
                     _controller.reset();
                   },
                   child: Text('Reset'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // you can add more cards
+                    _controller.append(cards);
+                  },
+                  child: Text('Append'),
                 ),
               ],
             ),
