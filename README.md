@@ -49,6 +49,8 @@ TCard(
 
 <img src="./example/demo.gif" width="334" alt="demo">
 
+![images](./example/icon.png)
+
 ### Network image
 
 ```dart
@@ -117,10 +119,43 @@ class _MyAppState extends State<MyApp> {
           children: [
             TCard(
               cards: cards,
+              leftIcon: ElevatedButton( // the left icon on the card
+                style: ElevatedButton.styleFrom(
+                  fixedSize: Size(52, 52),
+                  elevation: 0,
+                  primary: Colors.red,
+                  shape: CircleBorder(
+                    side: BorderSide(width: 0, color: Colors.transparent),
+                  ),
+                ),
+                onPressed: null,
+                child: const Icon(
+                  Icons.close,
+                  color: Colors.black45,
+                  size: 32,
+                ),
+              ),
+              // the right icon if you want it.
+              rightIcon: const Icon(
+                Icons.favorite,
+                color: Colors.pink,
+                size: 32,
+              ),
               size: Size(360, 480),
               controller: _controller,
               onForward: (index, info) {
                 print(index);
+                var offset = 3;
+                if (index >= cards.length - offset) {
+                  print('loading more...');
+                  List<Widget> addCards = List.generate(
+                    // generate or load more cards from your server
+                  ).toList();
+                  setState(() {
+                    cards.addAll(addCards);
+                  });
+                  _controller.append(addCards);// append more cards
+                }
               },
               onBack: (index, info) {
                 print(index);
@@ -216,6 +251,8 @@ _controller.reset(cards: newCards);
 | lockYAxis     |      `bool`       | `false` |                                                  Lock Y Axis Gesture                                                   | `false`  |
 | slideSpeed    |     `double`      |  `20`   |                 How quick should it be slided? less is slower. 10 is a bit slow. 20 is a quick enough.                 | `false`  |
 | delaySlideFor |       `int`       |  `500`  | How long does it have to wait until the next slide is sliable? less is quicker. 100 is fast enough. 500 is a bit slow. | `false`  |
+| leftIcon      |       `Widget`    |  `null` |                            left icon on the card showing when swipe to right                                           | `false`  |
+| rightIcon     |       `Widget`    |  `null` |                            right icon on the card showing when swipe to right                                          | `false`  |
 
 ## Contribute
 

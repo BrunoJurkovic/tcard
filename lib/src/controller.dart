@@ -29,6 +29,8 @@ class TCardController {
 
   get reset => state!.reset;
 
+  get append => state!.append;
+
   void dispose() {
     state = null;
   }
