@@ -46,6 +46,10 @@ class TCard extends StatefulWidget {
   /// Alignment.topCenter is the default
   final Alignment stackAlignment;
 
+  /// What should the offset between the cards in the stack be like
+  /// Default is STANDARD, but for less offset you can use COMPACT.
+  final StackDensity stackDensity;
+
   const TCard({
     required this.cards,
     this.leftIcon,
@@ -58,6 +62,7 @@ class TCard extends StatefulWidget {
     this.slideSpeed = 20,
     this.delaySlideFor = 500,
     this.stackAlignment = Alignment.topCenter,
+    this.stackDensity = StackDensity.STANDARD,
     this.size = const Size(380, 400),
   })  : assert(cards != null),
         assert(cards.length > 0);
@@ -406,6 +411,8 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
     super.initState();
 
     CardAlignments.stackAlignment = widget.stackAlignment;
+    CardAlignments.stackDensity = widget.stackDensity;
+
     _frontCardAlignment = CardAlignments.front;
 
     // 初始化所有传入的卡片
@@ -466,8 +473,6 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    CardAlignments.stackAlignment = widget.stackAlignment;
-
     return SizedBox.fromSize(
       size: widget.size,
       child: LayoutBuilder(

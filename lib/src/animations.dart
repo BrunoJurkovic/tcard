@@ -17,16 +17,23 @@ class CardSizes {
   }
 }
 
+/// Stack density {
+enum StackDensity {
+  COMPACT,
+  STANDARD,
+}
+
 /// Card Alignments
 class CardAlignments {
   static Alignment stackAlignment = Alignment.topCenter;
+  static StackDensity stackDensity = StackDensity.COMPACT;
 
   static Alignment middle = Alignment(stackAlignment.x / -6, 0.0);
 
-  static Alignment front =
-      Alignment(stackAlignment.x / 2, stackAlignment.y / 2);
-  static Alignment back =
-      Alignment(stackAlignment.x / -2, stackAlignment.y / -2);
+  static Alignment front = Alignment(stackAlignment.x / 2,
+      stackAlignment.y / ((stackDensity == StackDensity.STANDARD) ? 2 : 4));
+  static Alignment back = Alignment(stackAlignment.x / -2,
+      stackAlignment.y / ((stackDensity == StackDensity.STANDARD) ? -2 : -4));
 }
 
 /// Card Forward Animations
