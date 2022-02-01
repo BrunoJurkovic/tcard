@@ -16,11 +16,11 @@ class CardScales {
   }
 
   static double middle(BoxConstraints constraints) {
-    return 0.95;
+    return 0.93;
   }
 
   static double back(BoxConstraints constraints) {
-    return 0.9;
+    return 0.86;
   }
 }
 
@@ -38,9 +38,9 @@ class CardAlignments {
   static Alignment middle = Alignment(stackAlignment.x / -6, 0.0);
 
   static Alignment front = Alignment(stackAlignment.x / 2,
-      stackAlignment.y / ((stackDensity == StackDensity.STANDARD) ? 1 : 2));
+      stackAlignment.y / ((stackDensity == StackDensity.STANDARD) ? 1 : 1.6));
   static Alignment back = Alignment(stackAlignment.x / -2,
-      stackAlignment.y / ((stackDensity == StackDensity.STANDARD) ? -1 : -2));
+      stackAlignment.y / ((stackDensity == StackDensity.STANDARD) ? -1 : -1.6));
 }
 
 /// Card Forward Animations
