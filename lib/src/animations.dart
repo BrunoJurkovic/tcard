@@ -7,14 +7,6 @@ class CardSizes {
   static Size front(BoxConstraints constraints) {
     return Size(constraints.maxWidth * 0.9, constraints.maxHeight * 0.9);
   }
-
-  static Size middle(BoxConstraints constraints) {
-    return Size(constraints.maxWidth * 0.85, constraints.maxHeight * 0.9);
-  }
-
-  static Size back(BoxConstraints constraints) {
-    return Size(constraints.maxWidth * 0.8, constraints.maxHeight * .9);
-  }
 }
 
 /// Card Scales
@@ -28,7 +20,7 @@ class CardScales {
   }
 
   static double back(BoxConstraints constraints) {
-    return 0.85;
+    return 0.9;
   }
 }
 
@@ -46,9 +38,9 @@ class CardAlignments {
   static Alignment middle = Alignment(stackAlignment.x / -6, 0.0);
 
   static Alignment front = Alignment(stackAlignment.x / 2,
-      stackAlignment.y / ((stackDensity == StackDensity.STANDARD) ? 2 : 4));
+      stackAlignment.y / ((stackDensity == StackDensity.STANDARD) ? 1 : 2));
   static Alignment back = Alignment(stackAlignment.x / -2,
-      stackAlignment.y / ((stackDensity == StackDensity.STANDARD) ? -2 : -4));
+      stackAlignment.y / ((stackDensity == StackDensity.STANDARD) ? -1 : -2));
 }
 
 /// Card Forward Animations
@@ -105,22 +97,6 @@ class CardAnimations {
     );
   }
 
-  /// 中间卡片尺寸变换动画
-  static Animation<Size?> middleCardSizeAnimation(
-    AnimationController parent,
-    BoxConstraints constraints,
-  ) {
-    return SizeTween(
-      begin: CardSizes.middle(constraints),
-      end: CardSizes.front(constraints),
-    ).animate(
-      CurvedAnimation(
-        parent: parent,
-        curve: Interval(0.2, 0.5, curve: Curves.easeIn),
-      ),
-    );
-  }
-
   /// 最后面卡片位置变换动画
   static Animation<Alignment> backCardAlignmentAnimation(
     AnimationController parent,
@@ -128,22 +104,6 @@ class CardAnimations {
     return AlignmentTween(
       begin: CardAlignments.back,
       end: CardAlignments.middle,
-    ).animate(
-      CurvedAnimation(
-        parent: parent,
-        curve: Interval(0.4, 0.7, curve: Curves.easeIn),
-      ),
-    );
-  }
-
-  /// 最后面卡片尺寸变换动画
-  static Animation<Size?> backCardSizeAnimation(
-    AnimationController parent,
-    BoxConstraints constraints,
-  ) {
-    return SizeTween(
-      begin: CardSizes.back(constraints),
-      end: CardSizes.middle(constraints),
     ).animate(
       CurvedAnimation(
         parent: parent,
@@ -207,14 +167,13 @@ class CardReverseAnimations {
     );
   }
 
-  /// 中间卡片尺寸变换动画
-  static Animation<Size?> middleCardSizeAnimation(
+  static Animation<double> middleCardScaleAnimation(
     AnimationController parent,
     BoxConstraints constraints,
   ) {
-    return SizeTween(
-      begin: CardSizes.front(constraints),
-      end: CardSizes.middle(constraints),
+    return Tween<double>(
+      begin: CardScales.front(constraints),
+      end: CardScales.middle(constraints),
     ).animate(
       CurvedAnimation(
         parent: parent,
@@ -238,14 +197,13 @@ class CardReverseAnimations {
     );
   }
 
-  /// 最后面卡片尺寸变换动画
-  static Animation<Size?> backCardSizeAnimation(
+  static Animation<double> backCardScaleAnimation(
     AnimationController parent,
     BoxConstraints constraints,
   ) {
-    return SizeTween(
-      begin: CardSizes.middle(constraints),
-      end: CardSizes.back(constraints),
+    return Tween<double>(
+      begin: CardScales.middle(constraints),
+      end: CardScales.back(constraints),
     ).animate(
       CurvedAnimation(
         parent: parent,

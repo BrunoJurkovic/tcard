@@ -171,9 +171,9 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
         alignment: CardReverseAnimations.middleCardAlignmentAnimation(
           _cardReverseController,
         ).value,
-        child: SizedBox.fromSize(
-          size: CardReverseAnimations.middleCardSizeAnimation(
-            _cardReverseController,
+        child: Transform.scale(
+          scale: CardReverseAnimations.middleCardScaleAnimation(
+            _cardChangeController,
             constraints,
           ).value,
           child: child,
@@ -184,24 +184,13 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
         alignment: CardAnimations.middleCardAlignmentAnimation(
           _cardChangeController,
         ).value,
-        child: AnimatedScale(
-          duration: Duration(milliseconds: 300),
+        child: Transform.scale(
           scale: CardAnimations.middleCardScaleAnimation(
             _cardChangeController,
             constraints,
           ).value,
           child: child,
         ),
-        /*
-        child: SizedBox.fromSize(
-          size: CardAnimations.middleCardSizeAnimation(
-            _cardChangeController,
-            constraints,
-          ).value,
-          child: child,
-        ),
-
-         */
       );
     } else {
       return Align(
@@ -210,12 +199,6 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
           scale: CardScales.middle(constraints),
           child: child,
         ),
-/*
-          SizedBox.fromSize(
-          size: CardSizes.middle(constraints),
-          child: child,
-        ),
-         */
       );
     }
   }
@@ -235,9 +218,9 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
         alignment: CardReverseAnimations.backCardAlignmentAnimation(
           _cardReverseController,
         ).value,
-        child: SizedBox.fromSize(
-          size: CardReverseAnimations.backCardSizeAnimation(
-            _cardReverseController,
+        child: Transform.scale(
+          scale: CardReverseAnimations.backCardScaleAnimation(
+            _cardChangeController,
             constraints,
           ).value,
           child: child,
@@ -248,24 +231,13 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
         alignment: CardAnimations.backCardAlignmentAnimation(
           _cardChangeController,
         ).value,
-        child: AnimatedScale(
-          duration: Duration(milliseconds: 300),
+        child: Transform.scale(
           scale: CardAnimations.backCardScaleAnimation(
             _cardChangeController,
             constraints,
           ).value,
           child: child,
         ),
-        /*
-        child: SizedBox.fromSize(
-          size: CardAnimations.backCardSizeAnimation(
-            _cardChangeController,
-            constraints,
-          ).value,
-          child: child,
-        ),
-
-         */
       );
     } else {
       return Align(
@@ -274,13 +246,6 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
           scale: CardScales.back(constraints),
           child: child,
         ),
-        /*
-        child: SizedBox.fromSize(
-          size: CardSizes.back(constraints),
-          child: child,
-        ),
-
-         */
       );
     }
   }
