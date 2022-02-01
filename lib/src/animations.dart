@@ -17,6 +17,21 @@ class CardSizes {
   }
 }
 
+/// Card Scales
+class CardScales {
+  static double front(BoxConstraints constraints) {
+    return 1;
+  }
+
+  static double middle(BoxConstraints constraints) {
+    return 0.95;
+  }
+
+  static double back(BoxConstraints constraints) {
+    return 0.85;
+  }
+}
+
 /// Stack density {
 enum StackDensity {
   COMPACT,
@@ -75,6 +90,21 @@ class CardAnimations {
     );
   }
 
+  static Animation<double> middleCardScaleAnimation(
+    AnimationController parent,
+    BoxConstraints constraints,
+  ) {
+    return Tween<double>(
+      begin: CardScales.middle(constraints),
+      end: CardScales.front(constraints),
+    ).animate(
+      CurvedAnimation(
+        parent: parent,
+        curve: Interval(0.2, 0.5, curve: Curves.easeIn),
+      ),
+    );
+  }
+
   /// 中间卡片尺寸变换动画
   static Animation<Size?> middleCardSizeAnimation(
     AnimationController parent,
@@ -114,6 +144,21 @@ class CardAnimations {
     return SizeTween(
       begin: CardSizes.back(constraints),
       end: CardSizes.middle(constraints),
+    ).animate(
+      CurvedAnimation(
+        parent: parent,
+        curve: Interval(0.4, 0.7, curve: Curves.easeIn),
+      ),
+    );
+  }
+
+  static Animation<double> backCardScaleAnimation(
+    AnimationController parent,
+    BoxConstraints constraints,
+  ) {
+    return Tween<double>(
+      begin: CardScales.back(constraints),
+      end: CardScales.middle(constraints),
     ).animate(
       CurvedAnimation(
         parent: parent,
