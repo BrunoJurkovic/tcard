@@ -42,6 +42,10 @@ class TCard extends StatefulWidget {
   /// How long does it have to wait until the next slide is sliable? less is quicker. 100 is fast enough. 500 is a bit slow.
   final int delaySlideFor;
 
+  /// How should the cards be stacked on top of each other?
+  /// Alignment.topCenter is the default
+  final Alignment stackAlignment;
+
   const TCard({
     required this.cards,
     this.leftIcon,
@@ -53,6 +57,7 @@ class TCard extends StatefulWidget {
     this.lockYAxis = false,
     this.slideSpeed = 20,
     this.delaySlideFor = 500,
+    this.stackAlignment = Alignment.topCenter,
     this.size = const Size(380, 400),
   })  : assert(cards != null),
         assert(cards.length > 0);
@@ -73,7 +78,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
   int get frontCardIndex => _frontCardIndex;
 
   // 最前面卡片的位置
-  Alignment _frontCardAlignment = CardAlignments.front;
+  late Alignment _frontCardAlignment;
   // 最前面卡片的旋转角度
   double _frontCardRotation = 0.0;
   double _opacity = 0.0;
@@ -120,7 +125,6 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
         ),
       ),
     );
-
     if (reverse) {
       return Align(
         alignment: CardReverseAnimations.frontCardShowAnimation(
@@ -401,6 +405,9 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
+    CardAlignments.stackAlignment = widget.stackAlignment;
+    _frontCardAlignment = CardAlignments.front;
+
     // 初始化所有传入的卡片
     _cards.addAll(widget.cards);
 
@@ -459,6 +466,8 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    CardAlignments.stackAlignment = widget.stackAlignment;
+
     return SizedBox.fromSize(
       size: widget.size,
       child: LayoutBuilder(
