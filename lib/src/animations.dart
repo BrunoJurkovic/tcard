@@ -19,9 +19,15 @@ class CardSizes {
 
 /// Card Alignments
 class CardAlignments {
-  static Alignment front = Alignment(0.0, -0.5);
-  static Alignment middle = Alignment(0.0, 0.0);
-  static Alignment back = Alignment(0.0, 0.5);
+  // Stack cards verticaly
+  // static Alignment front = Alignment(0.0, -0.5);
+  // static Alignment middle = Alignment(0.0, 0.0);
+  // static Alignment back = Alignment(0.0, 0.5);
+
+// Stack cards horizontally
+    static Alignment front = Alignment(-2.0, 0.0);
+  static Alignment middle = Alignment(1.0, 0.0);
+  static Alignment back = Alignment(2.0, 0.0);
 }
 
 /// Card Forward Animations
