@@ -476,7 +476,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
               _middleCard(constraints),
               _frontCard(constraints),
               // 使用一个 SizedBox 覆盖父元素整个区域
-              enableDrag && _cardChangeController.status != AnimationStatus.forward
+              widget.enableDrag && _cardChangeController.status != AnimationStatus.forward
                   ? SizedBox.expand(
                       child: GestureDetector(
                         onPanDown: (DragDownDetails details) {
