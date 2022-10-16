@@ -36,6 +36,9 @@ class TCard extends StatefulWidget {
   /// 控制Y轴
   final bool lockYAxis;
 
+  /// 开启拖拽
+  final bool enableDrag;
+
   /// How quick should it be slided? less is slower. 10 is a bit slow. 20 is a quick enough.
   final double slideSpeed;
 
@@ -51,6 +54,7 @@ class TCard extends StatefulWidget {
     this.onBack,
     this.onEnd,
     this.lockYAxis = false,
+    this.enableDrag = true,
     this.slideSpeed = 20,
     this.delaySlideFor = 500,
     this.size = const Size(380, 400),
@@ -472,7 +476,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
               _middleCard(constraints),
               _frontCard(constraints),
               // 使用一个 SizedBox 覆盖父元素整个区域
-              _cardChangeController.status != AnimationStatus.forward
+              enableDrag && _cardChangeController.status != AnimationStatus.forward
                   ? SizedBox.expand(
                       child: GestureDetector(
                         onPanDown: (DragDownDetails details) {
