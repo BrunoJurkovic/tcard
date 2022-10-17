@@ -119,7 +119,7 @@ class CardReverseAnimations {
     AnimationController parent,
     Alignment endAlignment,
     SwipeInfo info,
-    SwipeDirection direction
+    SwipeDirection swipeDirection
   ) {
     return AlignmentTween(
       begin: Alignment(
