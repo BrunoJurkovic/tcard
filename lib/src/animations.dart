@@ -118,7 +118,7 @@ class CardReverseAnimations {
   static Animation<Alignment> frontCardShowAnimation(
     AnimationController parent,
     Alignment endAlignment,
-    SwipeInfo info,,
+    SwipeInfo info,
     SwipeDirection direction
   ) {
     return AlignmentTween(
