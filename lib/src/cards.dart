@@ -39,6 +39,12 @@ class TCard extends StatefulWidget {
   /// 开启拖拽
   final bool enableDrag;
 
+  /// 向前动画方向
+  final SwipeDirection? forwardAnimDirection;
+
+  /// 向后动画方向
+  final SwipeDirection? backAnimDirection;
+
   /// How quick should it be slided? less is slower. 10 is a bit slow. 20 is a quick enough.
   final double slideSpeed;
 
@@ -58,6 +64,8 @@ class TCard extends StatefulWidget {
     this.slideSpeed = 20,
     this.delaySlideFor = 500,
     this.size = const Size(380, 400),
+    this.forwardAnimDirection,
+    this.backAnimDirection,
   })  : assert(cards != null),
         assert(cards.length > 0);
 
@@ -131,6 +139,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
           _cardReverseController,
           CardAlignments.front,
           _swipeInfoList[_frontCardIndex],
+          swipeDirection:widget.backAnimDirection
         ).value,
         child: rotate,
       );
@@ -140,6 +149,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
           _cardChangeController,
           _frontCardAlignment,
           _swipeInfoList[_frontCardIndex],
+          swipeDirection:widget.forwardAnimDirection
         ).value,
         child: rotate,
       );
