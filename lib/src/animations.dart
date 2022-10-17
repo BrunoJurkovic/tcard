@@ -31,13 +31,13 @@ class CardAnimations {
     AnimationController parent,
     Alignment beginAlignment,
     SwipeInfo info,
-    SwipeDirection swipeDirection
+    SwipeDirection? swipeDirection
   ) {
-    swipeDirection?=info.direction;
+    ;
     return AlignmentTween(
       begin: beginAlignment,
       end: Alignment(
-        swipeDirection == SwipeDirection.Left
+        (swipeDirection??info.direction) == SwipeDirection.Left
             ? beginAlignment.x - 30.0
             : beginAlignment.x + 30.0,
         0.0,
@@ -120,12 +120,11 @@ class CardReverseAnimations {
     AnimationController parent,
     Alignment endAlignment,
     SwipeInfo info,
-    SwipeDirection swipeDirection
+    SwipeDirection? swipeDirection
   ) {
-    swipeDirection?=info.direction;
     return AlignmentTween(
       begin: Alignment(
-        swipeDirection == SwipeDirection.Left
+       (swipeDirection??info.direction) == SwipeDirection.Left
             ? endAlignment.x - 30.0
             : endAlignment.x + 30.0,
         0.0,

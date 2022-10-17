@@ -139,7 +139,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
           _cardReverseController,
           CardAlignments.front,
           _swipeInfoList[_frontCardIndex],
-          swipeDirection:widget.backAnimDirection
+          widget.backAnimDirection
         ).value,
         child: rotate,
       );
@@ -149,7 +149,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
           _cardChangeController,
           _frontCardAlignment,
           _swipeInfoList[_frontCardIndex],
-          swipeDirection:widget.forwardAnimDirection
+          widget.forwardAnimDirection
         ).value,
         child: rotate,
       );
