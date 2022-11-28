@@ -42,6 +42,8 @@ class TCard extends StatefulWidget {
   /// How long does it have to wait until the next slide is sliable? less is quicker. 100 is fast enough. 500 is a bit slow.
   final int delaySlideFor;
 
+  final bool sameSize;
+
   const TCard({
     required this.cards,
     this.leftIcon,
@@ -54,6 +56,7 @@ class TCard extends StatefulWidget {
     this.slideSpeed = 20,
     this.delaySlideFor = 500,
     this.size = const Size(380, 400),
+    this.sameSize = false,
   })  : assert(cards != null),
         assert(cards.length > 0);
 
@@ -64,31 +67,39 @@ class TCard extends StatefulWidget {
 class TCardState extends State<TCard> with TickerProviderStateMixin {
   //  初始的卡片列表
   final List<Widget> _cards = [];
+
   // Card swipe directions
   final List<SwipeInfo> _swipeInfoList = [];
+
   List<SwipeInfo> get swipeInfoList => _swipeInfoList;
 
   //  最前面卡片的索引
   int _frontCardIndex = 0;
+
   int get frontCardIndex => _frontCardIndex;
 
   // 最前面卡片的位置
   Alignment _frontCardAlignment = CardAlignments.front;
+
   // 最前面卡片的旋转角度
   double _frontCardRotation = 0.0;
   double _opacity = 0.0;
+
   // 卡片位置变换动画控制器
   late AnimationController _cardChangeController;
+
   // 卡片位置恢复动画控制器
   late AnimationController _cardReverseController;
+
   // 卡片回弹动画
   late Animation<Alignment> _reboundAnimation;
+
   // 卡片回弹动画控制器
   late AnimationController _reboundController;
+
   //  前面的卡片
   Widget _frontCard(BoxConstraints constraints) {
-    Widget child =
-        _frontCardIndex < _cards.length ? _cards[_frontCardIndex] : Container();
+    Widget child = _frontCardIndex < _cards.length ? _cards[_frontCardIndex] : Container();
     bool forward = _cardChangeController.status == AnimationStatus.forward;
     bool reverse = _cardReverseController.status == AnimationStatus.forward;
 
@@ -149,9 +160,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
 
   // 中间的卡片
   Widget _middleCard(BoxConstraints constraints) {
-    Widget child = _frontCardIndex < _cards.length - 1
-        ? _cards[_frontCardIndex + 1]
-        : Container();
+    Widget child = _frontCardIndex < _cards.length - 1 ? _cards[_frontCardIndex + 1] : Container();
     bool forward = _cardChangeController.status == AnimationStatus.forward;
     bool reverse = _cardReverseController.status == AnimationStatus.forward;
 
@@ -185,7 +194,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
       return Align(
         alignment: CardAlignments.middle,
         child: SizedBox.fromSize(
-          size: CardSizes.middle(constraints),
+          size: widget.sameSize ? CardSizes.front(constraints) : CardSizes.middle(constraints),
           child: child,
         ),
       );
@@ -194,9 +203,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
 
   // 后面的卡片
   Widget _backCard(BoxConstraints constraints) {
-    Widget child = _frontCardIndex < _cards.length - 2
-        ? _cards[_frontCardIndex + 2]
-        : Container();
+    Widget child = _frontCardIndex < _cards.length - 2 ? _cards[_frontCardIndex + 2] : Container();
     bool forward = _cardChangeController.status == AnimationStatus.forward;
     bool reverse = _cardReverseController.status == AnimationStatus.forward;
 
@@ -230,7 +237,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
       return Align(
         alignment: CardAlignments.back,
         child: SizedBox.fromSize(
-          size: CardSizes.back(constraints),
+          size: widget.sameSize ? CardSizes.front(constraints) : CardSizes.back(constraints),
           child: child,
         ),
       );
@@ -307,9 +314,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
       );
     }
 
-    if (widget.onEnd != null &&
-        widget.onEnd is Function &&
-        _frontCardIndex >= _cards.length) {
+    if (widget.onEnd != null && widget.onEnd is Function && _frontCardIndex >= _cards.length) {
       widget.onEnd!();
     }
   }
@@ -320,9 +325,8 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
     _swipeInfoList.removeLast();
     if (widget.onBack != null && widget.onBack is Function) {
       int index = _frontCardIndex > 0 ? _frontCardIndex - 1 : 0;
-      SwipeInfo info = _swipeInfoList.isNotEmpty
-          ? _swipeInfoList[index]
-          : SwipeInfo(-1, SwipeDirection.None);
+      SwipeInfo info =
+          _swipeInfoList.isNotEmpty ? _swipeInfoList[index] : SwipeInfo(-1, SwipeDirection.None);
 
       widget.onBack!(_frontCardIndex, info);
     }
@@ -366,9 +370,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
     // 卡片移动速度 widget.slideSpeed
     _frontCardAlignment += Alignment(
       details.delta.dx / (size.width / 2) * widget.slideSpeed,
-      widget.lockYAxis
-          ? 0
-          : details.delta.dy / (size.height / 2) * widget.slideSpeed,
+      widget.lockYAxis ? 0 : details.delta.dy / (size.height / 2) * widget.slideSpeed,
     );
 
     // 设置最前面卡片的旋转角度
