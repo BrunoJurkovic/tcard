@@ -44,20 +44,27 @@ class TCard extends StatefulWidget {
 
   final bool sameSize;
 
-  const TCard({
-    required this.cards,
-    this.leftIcon,
-    this.rightIcon,
-    this.controller,
-    this.onForward,
-    this.onBack,
-    this.onEnd,
-    this.lockYAxis = false,
-    this.slideSpeed = 20,
-    this.delaySlideFor = 500,
-    this.size = const Size(380, 400),
-    this.sameSize = false,
-  })  : assert(cards != null),
+  /// 开启拖拽
+  final bool enableDrag;
+
+  final Widget? endTips;
+
+  const TCard(
+      {required this.cards,
+      this.leftIcon,
+      this.rightIcon,
+      this.controller,
+      this.onForward,
+      this.onBack,
+      this.onEnd,
+      this.lockYAxis = false,
+      this.slideSpeed = 20,
+      this.delaySlideFor = 500,
+      this.size = const Size(380, 400),
+      this.sameSize = false,
+      this.enableDrag = true,
+      this.endTips})
+      : assert(cards != null),
         assert(cards.length > 0);
 
   @override
@@ -489,6 +496,14 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
                       ),
                     )
                   : IgnorePointer(),
+              if (!widget.enableDrag && widget.endTips != null)
+                Align(
+                  alignment: _frontCardAlignment,
+                  child: SizedBox.fromSize(
+                    size: CardSizes.front(constraints),
+                    child: widget.endTips,
+                  ),
+                )
             ],
           );
         },

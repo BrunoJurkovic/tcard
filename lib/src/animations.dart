@@ -13,7 +13,7 @@ class CardSizes {
   }
 
   static Size back(BoxConstraints constraints) {
-    return Size(constraints.maxWidth * 0.8, constraints.maxHeight * .9);
+    return Size(constraints.maxWidth * 0.8, constraints.maxHeight * 0.9);
   }
 }
 
