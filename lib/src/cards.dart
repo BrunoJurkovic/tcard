@@ -49,6 +49,8 @@ class TCard extends StatefulWidget {
 
   final Widget? endTips;
 
+  final bool keepLast;
+
   const TCard(
       {required this.cards,
       this.leftIcon,
@@ -63,7 +65,8 @@ class TCard extends StatefulWidget {
       this.size = const Size(380, 400),
       this.sameSize = false,
       this.enableDrag = true,
-      this.endTips})
+      this.endTips,
+      this.keepLast = false})
       : assert(cards != null),
         assert(cards.length > 0);
 
@@ -106,7 +109,11 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
 
   //  前面的卡片
   Widget _frontCard(BoxConstraints constraints) {
-    Widget child = _frontCardIndex < _cards.length ? _cards[_frontCardIndex] : Container();
+    Widget child = _frontCardIndex < _cards.length
+        ? _cards[_frontCardIndex]
+        : widget.keepLast
+            ? _cards[_cards.length - 1]
+            : Container();
     bool forward = _cardChangeController.status == AnimationStatus.forward;
     bool reverse = _cardReverseController.status == AnimationStatus.forward;
 
@@ -329,7 +336,10 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
   // Back animation callback
   void _backCallback() {
     _resetFrontCard();
-    _swipeInfoList.removeLast();
+    if (!widget.keepLast) {
+      _swipeInfoList.removeLast();
+    }
+
     if (widget.onBack != null && widget.onBack is Function) {
       int index = _frontCardIndex > 0 ? _frontCardIndex - 1 : 0;
       SwipeInfo info =
@@ -481,7 +491,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
               _middleCard(constraints),
               _frontCard(constraints),
               // 使用一个 SizedBox 覆盖父元素整个区域
-              _cardChangeController.status != AnimationStatus.forward
+             widget.enableDrag && _cardChangeController.status != AnimationStatus.forward
                   ? SizedBox.expand(
                       child: GestureDetector(
                         onPanDown: (DragDownDetails details) {
