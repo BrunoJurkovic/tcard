@@ -20,8 +20,15 @@ class CardSizes {
 /// Card Alignments
 class CardAlignments {
   static Alignment front = Alignment(0.0, -0.5);
+  static Alignment frontRight = Alignment(-1, 0.0);
   static Alignment middle = Alignment(0.0, 0.0);
   static Alignment back = Alignment(0.0, 0.5);
+  static Alignment backRight = Alignment(0.5, 0);
+}
+
+enum StackPosition {
+  right,
+  bottom,
 }
 
 /// Card Forward Animations
@@ -51,10 +58,13 @@ class CardAnimations {
   /// 中间卡片位置变换动画
   static Animation<Alignment> middleCardAlignmentAnimation(
     AnimationController parent,
+    StackPosition stackPosition,
   ) {
     return AlignmentTween(
       begin: CardAlignments.middle,
-      end: CardAlignments.front,
+      end: stackPosition == StackPosition.bottom
+          ? CardAlignments.front
+          : CardAlignments.frontRight,
     ).animate(
       CurvedAnimation(
         parent: parent,
@@ -82,9 +92,12 @@ class CardAnimations {
   /// 最后面卡片位置变换动画
   static Animation<Alignment> backCardAlignmentAnimation(
     AnimationController parent,
+    StackPosition stackPosition,
   ) {
     return AlignmentTween(
-      begin: CardAlignments.back,
+      begin: stackPosition == StackPosition.bottom
+          ? CardAlignments.back
+          : CardAlignments.backRight,
       end: CardAlignments.middle,
     ).animate(
       CurvedAnimation(
@@ -138,9 +151,12 @@ class CardReverseAnimations {
   /// 中间卡片位置变换动画
   static Animation<Alignment> middleCardAlignmentAnimation(
     AnimationController parent,
+    StackPosition stackPosition,
   ) {
     return AlignmentTween(
-      begin: CardAlignments.front,
+      begin: stackPosition == StackPosition.bottom
+          ? CardAlignments.front
+          : CardAlignments.frontRight,
       end: CardAlignments.middle,
     ).animate(
       CurvedAnimation(
@@ -169,10 +185,13 @@ class CardReverseAnimations {
   /// 最后面卡片位置变换动画
   static Animation<Alignment> backCardAlignmentAnimation(
     AnimationController parent,
+    StackPosition stackPosition,
   ) {
     return AlignmentTween(
       begin: CardAlignments.middle,
-      end: CardAlignments.back,
+      end: stackPosition == StackPosition.bottom
+          ? CardAlignments.back
+          : CardAlignments.backRight,
     ).animate(
       CurvedAnimation(
         parent: parent,

@@ -51,6 +51,8 @@ class TCard extends StatefulWidget {
 
   final bool keepLast;
 
+  final StackPosition stackPosition;
+
   const TCard(
       {required this.cards,
       this.leftIcon,
@@ -66,9 +68,9 @@ class TCard extends StatefulWidget {
       this.sameSize = false,
       this.enableDrag = true,
       this.endTips,
-      this.keepLast = false})
-      : assert(cards != null),
-        assert(cards.length > 0);
+      this.keepLast = false,
+      this.stackPosition = StackPosition.bottom})
+      : assert(cards.length > 0);
 
   @override
   TCardState createState() => TCardState();
@@ -150,7 +152,9 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
       return Align(
         alignment: CardReverseAnimations.frontCardShowAnimation(
           _cardReverseController,
-          CardAlignments.front,
+          widget.stackPosition == StackPosition.bottom
+              ? CardAlignments.front
+              : CardAlignments.frontRight,
           _swipeInfoList[_frontCardIndex],
         ).value,
         child: rotate,
@@ -174,15 +178,16 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
 
   // 中间的卡片
   Widget _middleCard(BoxConstraints constraints) {
-    Widget child = _frontCardIndex < _cards.length - 1 ? _cards[_frontCardIndex + 1] : Container();
+    Widget child = _frontCardIndex < _cards.length - 1
+        ? _cards[_frontCardIndex + 1]
+        : Container();
     bool forward = _cardChangeController.status == AnimationStatus.forward;
     bool reverse = _cardReverseController.status == AnimationStatus.forward;
-
     if (reverse) {
       return Align(
         alignment: CardReverseAnimations.middleCardAlignmentAnimation(
-          _cardReverseController,
-        ).value,
+                _cardReverseController, widget.stackPosition)
+            .value,
         child: SizedBox.fromSize(
           size: CardReverseAnimations.middleCardSizeAnimation(
             _cardReverseController,
@@ -194,8 +199,8 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
     } else if (forward) {
       return Align(
         alignment: CardAnimations.middleCardAlignmentAnimation(
-          _cardChangeController,
-        ).value,
+                _cardChangeController, widget.stackPosition)
+            .value,
         child: SizedBox.fromSize(
           size: CardAnimations.middleCardSizeAnimation(
             _cardChangeController,
@@ -208,7 +213,9 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
       return Align(
         alignment: CardAlignments.middle,
         child: SizedBox.fromSize(
-          size: widget.sameSize ? CardSizes.front(constraints) : CardSizes.middle(constraints),
+          size: widget.sameSize
+              ? CardSizes.front(constraints)
+              : CardSizes.middle(constraints),
           child: child,
         ),
       );
@@ -217,15 +224,17 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
 
   // 后面的卡片
   Widget _backCard(BoxConstraints constraints) {
-    Widget child = _frontCardIndex < _cards.length - 2 ? _cards[_frontCardIndex + 2] : Container();
+    Widget child = _frontCardIndex < _cards.length - 2
+        ? _cards[_frontCardIndex + 2]
+        : Container();
     bool forward = _cardChangeController.status == AnimationStatus.forward;
     bool reverse = _cardReverseController.status == AnimationStatus.forward;
 
     if (reverse) {
       return Align(
         alignment: CardReverseAnimations.backCardAlignmentAnimation(
-          _cardReverseController,
-        ).value,
+                _cardReverseController, widget.stackPosition)
+            .value,
         child: SizedBox.fromSize(
           size: CardReverseAnimations.backCardSizeAnimation(
             _cardReverseController,
@@ -238,6 +247,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
       return Align(
         alignment: CardAnimations.backCardAlignmentAnimation(
           _cardChangeController,
+          widget.stackPosition,
         ).value,
         child: SizedBox.fromSize(
           size: CardAnimations.backCardSizeAnimation(
@@ -249,9 +259,13 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
       );
     } else {
       return Align(
-        alignment: CardAlignments.back,
+        alignment: widget.stackPosition == StackPosition.bottom
+            ? CardAlignments.back
+            : CardAlignments.backRight,
         child: SizedBox.fromSize(
-          size: widget.sameSize ? CardSizes.front(constraints) : CardSizes.back(constraints),
+          size: widget.sameSize
+              ? CardSizes.front(constraints)
+              : CardSizes.back(constraints),
           child: child,
         ),
       );
@@ -269,7 +283,9 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
     _reboundAnimation = _reboundController.drive(
       AlignmentTween(
         begin: _frontCardAlignment,
-        end: CardAlignments.front,
+        end: widget.stackPosition == StackPosition.bottom
+            ? CardAlignments.front
+            : CardAlignments.frontRight,
       ),
     );
 
@@ -328,7 +344,9 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
       );
     }
 
-    if (widget.onEnd != null && widget.onEnd is Function && _frontCardIndex >= _cards.length) {
+    if (widget.onEnd != null &&
+        widget.onEnd is Function &&
+        _frontCardIndex >= _cards.length) {
       widget.onEnd!();
     }
   }
@@ -342,8 +360,9 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
 
     if (widget.onBack != null && widget.onBack is Function) {
       int index = _frontCardIndex > 0 ? _frontCardIndex - 1 : 0;
-      SwipeInfo info =
-          _swipeInfoList.isNotEmpty ? _swipeInfoList[index] : SwipeInfo(-1, SwipeDirection.None);
+      SwipeInfo info = _swipeInfoList.isNotEmpty
+          ? _swipeInfoList[index]
+          : SwipeInfo(-1, SwipeDirection.None);
 
       widget.onBack!(_frontCardIndex, info);
     }
@@ -353,7 +372,9 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
   void _resetFrontCard() {
     _frontCardRotation = 0.0;
     _opacity = 0.0;
-    _frontCardAlignment = CardAlignments.front;
+    _frontCardAlignment = widget.stackPosition == StackPosition.bottom
+        ? CardAlignments.front
+        : CardAlignments.frontRight;
     setState(() {});
   }
 
@@ -387,7 +408,9 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
     // 卡片移动速度 widget.slideSpeed
     _frontCardAlignment += Alignment(
       details.delta.dx / (size.width / 2) * widget.slideSpeed,
-      widget.lockYAxis ? 0 : details.delta.dy / (size.height / 2) * widget.slideSpeed,
+      widget.lockYAxis
+          ? 0
+          : details.delta.dy / (size.height / 2) * widget.slideSpeed,
     );
 
     // 设置最前面卡片的旋转角度
@@ -419,7 +442,9 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-
+    _frontCardAlignment = widget.stackPosition == StackPosition.bottom
+        ? CardAlignments.front
+        : CardAlignments.frontRight;
     // 初始化所有传入的卡片
     _cards.addAll(widget.cards);
 
@@ -491,7 +516,8 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
               _middleCard(constraints),
               _frontCard(constraints),
               // 使用一个 SizedBox 覆盖父元素整个区域
-             widget.enableDrag && _cardChangeController.status != AnimationStatus.forward
+              widget.enableDrag &&
+                      _cardChangeController.status != AnimationStatus.forward
                   ? SizedBox.expand(
                       child: GestureDetector(
                         onPanDown: (DragDownDetails details) {
