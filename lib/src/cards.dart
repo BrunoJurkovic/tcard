@@ -212,11 +212,15 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
     } else {
       return Align(
         alignment: CardAlignments.middle,
-        child: SizedBox.fromSize(
-          size: widget.sameSize
-              ? CardSizes.front(constraints)
-              : CardSizes.middle(constraints),
-          child: child,
+        child: UnconstrainedBox(
+          child: SizedBox.fromSize(
+            size: widget.sameSize
+                ? CardSizes.front(constraints)
+                : widget.stackPosition == StackPosition.bottom
+                    ? CardSizes.middle(constraints)
+                    : CardSizes.middleRight(constraints),
+            child: child,
+          ),
         ),
       );
     }
@@ -265,7 +269,9 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
         child: SizedBox.fromSize(
           size: widget.sameSize
               ? CardSizes.front(constraints)
-              : CardSizes.back(constraints),
+              : widget.stackPosition == StackPosition.bottom
+                  ? CardSizes.back(constraints)
+                  : CardSizes.backRight(constraints),
           child: child,
         ),
       );

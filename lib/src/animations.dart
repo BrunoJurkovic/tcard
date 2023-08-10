@@ -15,6 +15,14 @@ class CardSizes {
   static Size back(BoxConstraints constraints) {
     return Size(constraints.maxWidth * 0.8, constraints.maxHeight * 0.9);
   }
+
+  static Size middleRight(BoxConstraints constraints) {
+    return Size(constraints.maxWidth * 0.85, constraints.maxHeight * 0.85);
+  }
+
+  static Size backRight(BoxConstraints constraints) {
+    return Size(constraints.maxWidth * 0.8, constraints.maxHeight * 0.8);
+  }
 }
 
 /// Card Alignments
