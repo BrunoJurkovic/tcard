@@ -91,7 +91,7 @@ class CardAnimations {
       begin: CardSizes.middle(constraints),
       end: stackPosition == StackPosition.bottom
           ? CardSizes.front(constraints)
-          : CardSizes.middleRight(constraints),
+          : CardSizes.front(constraints),
     ).animate(
       CurvedAnimation(
         parent: parent,

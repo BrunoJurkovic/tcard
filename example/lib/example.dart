@@ -20,7 +20,7 @@ List<Widget> cards = List.generate(
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: colors[index].withOpacity(0.5),
+        color: colors[index],
       ),
       child: Text(
         '${index + 1}',
