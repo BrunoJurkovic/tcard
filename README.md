@@ -49,7 +49,7 @@ TCard(
 
 <img src="./example/demo.gif" width="334" alt="demo">
 
-![images](./example/icon.png)
+![images](example/icon.png)
 
 ### Network image
 
@@ -95,7 +95,7 @@ TCard(
 );
 ```
 
-![images](./example/images.gif)
+![images](example/images.gif)
 
 Image from [gank.io](gank.io)
 
@@ -199,7 +199,7 @@ class _MyAppState extends State<MyApp> {
 }
 ```
 
-![controller](./example/controller.gif)
+![controller](example/controller.gif)
 
 ### Determine the sliding direction
 
@@ -226,7 +226,7 @@ class _MyAppState extends State<MyApp> {
 )
 ```
 
-![like](./example/like.png)
+![like](example/like.png)
 
 ### Reset with new cards
 

@@ -1,8 +1,5 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
-
-import '../lib/tcard.dart';
+import 'package:tcard/tcard.dart';
 
 List<Color> colors = [
   Colors.blue,
@@ -18,7 +15,7 @@ List<Color> colors = [
 ];
 
 List<Widget> cards = List.generate(
-  colors.length,
+  8,
   (int index) {
     return Container(
       alignment: Alignment.center,
@@ -39,7 +36,7 @@ class TCardPage extends StatefulWidget {
 }
 
 class _TCardPageState extends State<TCardPage> {
-  TCardController _controller = TCardController();
+  final TCardController _controller = TCardController();
 
   int _index = 0;
 
@@ -52,42 +49,9 @@ class _TCardPageState extends State<TCardPage> {
             SizedBox(height: 200),
             TCard(
               cards: cards,
-              rightIcon: const Icon(
-                Icons.favorite,
-                color: Colors.pink,
-                size: 32,
-              ),
               controller: _controller,
-              onForward: (index, info) {
-                // you can load more cards from you server
-                var offset = 3;
-                if (index >= cards.length - offset) {
-                  print('loading more...');
-                  List<Widget> addCards = List.generate(
-                    colors.length,
-                    (int index2) {
-                      return Container(
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: colors[index2],
-                        ),
-                        child: Text(
-                          '${index2 + 1}',
-                          style:
-                              TextStyle(fontSize: 100.0, color: Colors.white),
-                        ),
-                      );
-                    },
-                  ).toList();
-                  setState(() {
-                    cards.addAll(addCards);
-                  });
-                  _controller.append(addCards);
-                }
-                _index = index;
-                print(info.direction);
-                setState(() {});
-              },
+              stackPosition: StackPosition.right,
+              onForward: (index, info) {},
               onBack: (index, info) {
                 _index = index;
                 setState(() {});
@@ -100,19 +64,19 @@ class _TCardPageState extends State<TCardPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                OutlineButton(
+                TextButton(
                   onPressed: () {
                     _controller.back();
                   },
                   child: Text('Back'),
                 ),
-                OutlineButton(
+                TextButton(
                   onPressed: () {
-                    _controller.forward();
+                    _controller.forward(direction: SwipeDirection.Left);
                   },
                   child: Text('Forward'),
                 ),
-                OutlineButton(
+                TextButton(
                   onPressed: () {
                     _controller.reset();
                   },
