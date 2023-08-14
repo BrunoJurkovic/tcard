@@ -9,27 +9,27 @@ class CardSizes {
   }
 
   static Size middle(BoxConstraints constraints) {
-    return Size(constraints.maxWidth * 0.85, constraints.maxHeight * 0.9);
-  }
-
-  static Size back(BoxConstraints constraints) {
-    return Size(constraints.maxWidth * 0.8, constraints.maxHeight * 0.9);
-  }
-
-  static Size middleRight(BoxConstraints constraints) {
     return Size(constraints.maxWidth * 0.85, constraints.maxHeight * 0.85);
   }
 
+  static Size back(BoxConstraints constraints) {
+    return Size(constraints.maxWidth * 0.8, constraints.maxHeight * .9);
+  }
+
+  static Size middleRight(BoxConstraints constraints) {
+    return Size(constraints.maxWidth * 0.9, constraints.maxHeight * 0.85);
+  }
+
   static Size backRight(BoxConstraints constraints) {
-    return Size(constraints.maxWidth * 0.8, constraints.maxHeight * 0.8);
+    return Size(constraints.maxWidth * .95, constraints.maxHeight * 0.8);
   }
 }
 
 /// Card Alignments
 class CardAlignments {
   static Alignment front = Alignment(0.0, -0.5);
-  static Alignment frontRight = Alignment(-1, 0.0);
-  static Alignment middle = Alignment(0.0, 0.0);
+  static Alignment frontRight = Alignment(-0.5, 0.0);
+  static Alignment middle = Alignment(0.0, 0);
   static Alignment back = Alignment(0.0, 0.5);
   static Alignment backRight = Alignment(0.5, 0);
 }
@@ -85,10 +85,13 @@ class CardAnimations {
   static Animation<Size?> middleCardSizeAnimation(
     AnimationController parent,
     BoxConstraints constraints,
+    StackPosition stackPosition,
   ) {
     return SizeTween(
       begin: CardSizes.middle(constraints),
-      end: CardSizes.front(constraints),
+      end: stackPosition == StackPosition.bottom
+          ? CardSizes.front(constraints)
+          : CardSizes.middleRight(constraints),
     ).animate(
       CurvedAnimation(
         parent: parent,
@@ -119,10 +122,15 @@ class CardAnimations {
   static Animation<Size?> backCardSizeAnimation(
     AnimationController parent,
     BoxConstraints constraints,
+    StackPosition stackPosition,
   ) {
     return SizeTween(
-      begin: CardSizes.back(constraints),
-      end: CardSizes.middle(constraints),
+      begin: stackPosition == StackPosition.bottom
+          ? CardSizes.back(constraints)
+          : CardSizes.backRight(constraints),
+      end: stackPosition == StackPosition.bottom
+          ? CardSizes.middle(constraints)
+          : CardSizes.middleRight(constraints),
     ).animate(
       CurvedAnimation(
         parent: parent,

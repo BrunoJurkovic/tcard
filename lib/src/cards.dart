@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 
@@ -91,7 +92,7 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
   int get frontCardIndex => _frontCardIndex;
 
   // 最前面卡片的位置
-  Alignment _frontCardAlignment = CardAlignments.front;
+  late Alignment _frontCardAlignment;
 
   // 最前面卡片的旋转角度
   double _frontCardRotation = 0.0;
@@ -203,9 +204,8 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
             .value,
         child: SizedBox.fromSize(
           size: CardAnimations.middleCardSizeAnimation(
-            _cardChangeController,
-            constraints,
-          ).value,
+                  _cardChangeController, constraints, widget.stackPosition)
+              .value,
           child: child,
         ),
       );
@@ -255,9 +255,8 @@ class TCardState extends State<TCard> with TickerProviderStateMixin {
         ).value,
         child: SizedBox.fromSize(
           size: CardAnimations.backCardSizeAnimation(
-            _cardChangeController,
-            constraints,
-          ).value,
+                  _cardChangeController, constraints, widget.stackPosition)
+              .value,
           child: child,
         ),
       );
